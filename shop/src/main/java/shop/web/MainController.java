@@ -13,12 +13,12 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class MainController {
 	
-	@RequestMapping("/shop.do")
+	/*@RequestMapping("/shop.do")
 	public ModelAndView mainPage(){
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("shop/main");
+		mav.setViewName("eshopper/index");
 		return mav;
-	}
+	}*/
 	@RequestMapping("/origin.do")
 	public ModelAndView admin_origin(){
 		ModelAndView mav = new ModelAndView();

@@ -17,6 +17,10 @@
 		)
 	</insert>
 	
+	<select id="selectAllCategoryMlist" parameterType="CategoryMVO" resultType="CategoryMVO">
+		SELECT * FROM CATEGORY_M
+	</select>
+	
 	<select id="selectCategoryMList" parameterType="CategoryMVO" resultType="CategoryMVO">
 		SELECT * FROM CATEGORY_M
 		WHERE CATEGORY_B_IDX=#{category_b_idx}

@@ -50,4 +50,11 @@ public class CategoryBServiceImpl extends EgovAbstractServiceImpl implements Cat
 		categoryBDAO.insertCategoryM(categoryMVO);
 	}
 
+	@Override
+	public List<CategoryMVO> selectAllCategoryMlist(CategoryMVO categoryMVO) {
+		// TODO Auto-generated method stub
+		LOGGER.debug(categoryMVO.toString());
+		return categoryBDAO.selectAllCategoryMlist(categoryMVO);
+	}
+
 }

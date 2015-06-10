@@ -19,6 +19,7 @@ public interface CategoryBMapper {
 	public List<CategoryBVO> selectCategoryBList(CategoryBVO categoryBVO);
 	public void insertCategoryB(CategoryBVO categoryBVO);
 	
+	public List<CategoryMVO> selectAllCategoryMlist(CategoryMVO categoryMVO);
 	public List<CategoryMVO> selectCategoryMList(CategoryMVO categoryMVO);
 	public void insertCategoryM(CategoryMVO categoryMVO);
 }

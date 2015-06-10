@@ -1,9 +1,12 @@
 package shop.service;
 
+import java.util.List;
+
 public class CategoryBVO {
 	int category_b_idx;
 	String category_b_name;
 	String category_b_desc="";
+	List<CategoryMVO> categoryML;
 	
 	public int getCategory_b_idx() {
 		return category_b_idx;
@@ -22,5 +25,11 @@ public class CategoryBVO {
 	}
 	public void setCategory_b_desc(String category_b_desc) {
 		this.category_b_desc = category_b_desc;
+	}
+	public List<CategoryMVO> getCategoryML() {
+		return categoryML;
+	}
+	public void setCategoryML(List<CategoryMVO> categoryML) {
+		this.categoryML = categoryML;
 	}
 }
