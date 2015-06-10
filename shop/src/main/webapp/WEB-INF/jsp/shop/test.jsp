@@ -8,7 +8,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>${categoryBList[0].category_b_name}</h1>
 	<c:forEach items="${categoryBList }" var="cbl" varStatus="status">
 		<h1>${cbl.category_b_name }</h1>
 	</c:forEach>

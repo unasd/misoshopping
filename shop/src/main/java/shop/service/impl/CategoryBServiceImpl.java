@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import shop.service.CategoryBService;
 import shop.service.CategoryBVO;
+import shop.service.CategoryMVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 @Service("categoryBService")
@@ -24,6 +25,29 @@ public class CategoryBServiceImpl extends EgovAbstractServiceImpl implements Cat
 	@Override
 	public List<CategoryBVO> selectCategoryBList(CategoryBVO categoryBVO) {
 		// TODO Auto-generated method stub
+		LOGGER.debug(categoryBVO.toString());
 		return categoryBDAO.selectCategoryBList(categoryBVO);
 	}
+
+	@Override
+	public void insertCategoryB(CategoryBVO categoryBVO) {
+		// TODO Auto-generated method stub
+		LOGGER.debug(categoryBVO.toString());
+		categoryBDAO.insertCategoryB(categoryBVO);
+	}
+
+	@Override
+	public List<CategoryMVO> selectCategoryMList(CategoryMVO categoryMVO) {
+		// TODO Auto-generated method stub
+		LOGGER.debug(categoryMVO.toString());
+		return categoryBDAO.selectCategoryMList(categoryMVO);
+	}
+	
+	@Override
+	public void insertCategoryM(CategoryMVO categoryMVO) {
+		// TODO Auto-generated method stub
+		LOGGER.debug(categoryMVO.toString());
+		categoryBDAO.insertCategoryM(categoryMVO);
+	}
+
 }

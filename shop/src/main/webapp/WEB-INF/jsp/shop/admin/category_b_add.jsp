@@ -5,17 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <%@include file="/head.jsp" %>
+<!-- Custom styles for this template -->
 <link href="css/dashboard.css" rel="stylesheet">
 </head>
 <body>
-<%@include file="/navbar.jsp" %>
-<%@include file="content.jsp" %>
-
-<div class="container">
-<hr>
-<%@include file="/footer.jsp" %>
-</div>
-<!-- /.container -->
+	대분류명 : <input type="text" id="category_b_name"/>
+	대분류 설명 : <input type="text" id="category_b_desc"/>
+</script>
 <!-- jQuery -->
 <!-- <script src="js/jquery.js"></script> -->
 <!-- Bootstrap Core JavaScript -->

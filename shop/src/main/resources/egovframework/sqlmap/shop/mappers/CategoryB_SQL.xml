@@ -4,5 +4,32 @@
 	<select id="selectCategoryBList" parameterType="CategoryBVO" resultType="CategoryBVO">
 		SELECT * FROM CATEGORY_B
 	</select>
+	
+	<insert id="insertCategoryB" parameterType="CategoryBVO">
+		INSERT INTO CATEGORY_B(
+			CATEGORY_B_IDX
+			, CATEGORY_B_NAME
+			, CATEGORY_B_DESC
+		) VALUES (
+			category_b_seq.nextval
+			, #{category_b_name}
+			, #{category_b_desc}
+		)
+	</insert>
+	
+	<select id="selectCategoryMList" parameterType="CategoryMVO" resultType="CategoryMVO">
+		SELECT * FROM CATEGORY_M
+		WHERE CATEGORY_B_IDX=#{category_b_idx}
+	</select>
+	
+	<insert id="insertCategoryM" parameterType="CategoryMVO">
+		INSERT INTO CATEGORY_M 
+		VALUES (
+			category_m_seq.nextval
+			, #{category_m_name}
+			, #{category_m_desc}
+			, #{category_b_idx}
+		)
+	</insert>
 
 </mapper>

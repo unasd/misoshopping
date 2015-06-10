@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.service.impl.GoodsMapper">
+	
+	<insert id="insertGoods" parameterType="GoodsVO">
+		INSERT INTO GOODS(
+			goods_name
+			, goods_desc
+			, goods_price
+			, goods_img
+			, goods_thumb
+			, goods_idx
+			, goods_regdate
+			, category_b_idx
+			, category_m_idx
+		) VALUES (
+			#{goods_name}
+			, #{goods_desc}
+			, #{goods_price}
+			, #{goods_img}
+			, #{goods_thumb}
+			, goods_seq.nextval
+			, to_char(sysdate, 'YYYY-MM-DD HH:MI:SS')
+			, #{category_b_idx}
+			, #{category_m_idx}
+		)
+	</insert>
+	
+	<select id="selectGoodsList" parameterType="GoodsVO" resultType="GoodsVO">
+		SELECT
+			goods_name
+			, SUBSTR(TRIM(goods_desc), 1, 10) AS goods_desc
+			, goods_price
+			, goods_thumb
+			, goods_idx
+			, goods_regdate
+			, category_b_idx
+			, category_m_idx
+		FROM
+			GOODS
+		ORDER BY goods_regdate DESC	
+	</select>
+</mapper>

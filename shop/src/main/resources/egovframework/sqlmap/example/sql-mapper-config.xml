@@ -6,6 +6,8 @@
 		<typeAlias type="egovframework.example.sample.service.SampleDefaultVO" alias="searchVO"/>
 		<typeAlias type="egovframework.example.sample.service.SampleVO" alias="sampleVO"/>
 		<typeAlias type="shop.service.CategoryBVO" alias="CategoryBVO"/>
+		<typeAlias type="shop.service.CategoryMVO" alias="CategoryMVO"/>
+		<typeAlias type="shop.service.GoodsVO" alias="GoodsVO"/>
 		<typeAlias type="egovframework.rte.psl.dataaccess.util.EgovMap" alias="egovMap"/>
     </typeAliases>
 </configuration>
