@@ -16,16 +16,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import egovframework.example.sample.service.SampleDefaultVO;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import shop.service.CategoryBService;
 import shop.service.CategoryBVO;
 import shop.service.CategoryMVO;
 import shop.service.GoodsService;
 import shop.service.GoodsVO;
+import shop.service.RevQnaService;
+import shop.service.RevQnaVO;
+import shop.service.ShopDefaultVO;
 
 @Controller
 public class GoodsController { 
@@ -34,14 +40,178 @@ public class GoodsController {
 	private GoodsService goodsService;
 	@Resource(name="categoryBService")
 	private CategoryBService categoryBService;
+	@Resource(name="RevQnaService")
+	private RevQnaService revQnaService;
 	
-	@RequestMapping("nav.do")
-	public ModelAndView nav(){
+	/**
+	 * 메인페이지 로딩
+	 * @param shopDefaultVO
+	 * @param goodsVO
+	 * @return
+	 */
+	@RequestMapping("/main.do")
+	public ModelAndView mainList(ShopDefaultVO shopDefaultVO, GoodsVO goodsVO){
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(shopDefaultVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(shopDefaultVO.getPageUnit());
+		paginationInfo.setPageSize(shopDefaultVO.getPageSize());
+		
+		shopDefaultVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		shopDefaultVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		shopDefaultVO.setRecordCountPerPage(paginationInfo.getPageSize());
+		shopDefaultVO.setB_idx(goodsVO.getCategory_b_idx());
+		shopDefaultVO.setM_idx(goodsVO.getCategory_m_idx());
+		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("shop/admin/nav");
+		List<GoodsVO> goodsList = goodsService.selectGoodsList(shopDefaultVO);
+		List<CategoryBVO> categoryBList = categoryBService.selectCategoryBList(new CategoryBVO());
+		List<CategoryMVO> categoryMList = categoryBService.selectAllCategoryMlist(new CategoryMVO());
+		
+		//categoryM을 분류별로 나눠 리스트에
+		for(int i=0; i<categoryBList.size(); i++){
+			int b_idx = categoryBList.get(i).getCategory_b_idx();
+			List<CategoryMVO> selectCateMList = new ArrayList<CategoryMVO>();
+			for(int j=0; j<categoryMList.size(); j++){
+				if(b_idx==categoryMList.get(j).getCategory_b_idx()){
+					// category_b_index가 i인 categoryM을 selectCateMList에 담는다
+					selectCateMList.add(categoryMList.get(j));
+					// 해당하는 categoryB의 인스턴스에 categoryMList를 셋팅
+					categoryBList.get(i).setCategoryML(selectCateMList);
+				}
+			}
+		} // categoryM 분류 끝
+		
+		mav.addObject("goodsList", goodsList);
+		mav.addObject("categoryBList", categoryBList);
+		mav.setViewName("eshopper/index");
 		return mav;
 	}
 	
+	/**
+	 * 
+	 * @param shopDefaultVO
+	 * @param goodsVO
+	 * @return
+	 */
+	@RequestMapping("/shop.do")
+	public ModelAndView shopList(ShopDefaultVO shopDefaultVO, GoodsVO goodsVO){
+		
+		
+		// @확인용 System.out.println("pageIndex : "+shopDefaultVO.getPageIndex());
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(shopDefaultVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(shopDefaultVO.getPageUnit());
+		paginationInfo.setPageSize(shopDefaultVO.getPageSize());
+		
+		shopDefaultVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		shopDefaultVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		shopDefaultVO.setRecordCountPerPage(paginationInfo.getPageSize());
+		shopDefaultVO.setB_idx(goodsVO.getCategory_b_idx());
+		shopDefaultVO.setM_idx(goodsVO.getCategory_m_idx());
+		
+		// @확인용 System.out.println(goodsVO.getCategory_b_idx());
+		// @확인용 System.out.println(goodsVO.getCategory_m_idx());
+		// @확인용 System.out.println("sdVO b_idx="+shopDefaultVO.getB_idx()+"/ sdVO m_idx="+shopDefaultVO.getM_idx());;
+		
+		// @확인용 System.out.println("orderval = "+shopDefaultVO.getOrderValue()+" / ascdesc ="+shopDefaultVO.getAscDesc());
+		
+		ModelAndView mav = new ModelAndView();
+		List<GoodsVO> goodsList = goodsService.selectGoodsList(shopDefaultVO);
+		
+		int totCnt = goodsService.selectGoodsListCnt(shopDefaultVO);
+		// @확인용 System.out.println("totCnt : "+totCnt);
+		paginationInfo.setTotalRecordCount(totCnt);
+		
+		List<CategoryBVO> categoryBList = categoryBService.selectCategoryBList(new CategoryBVO());
+		List<CategoryMVO> categoryMList = categoryBService.selectAllCategoryMlist(new CategoryMVO());
+		
+		/**categoryM을 분류별로 나눠 리스트에*/
+		for(int i=0; i<categoryBList.size(); i++){
+			int b_idx = categoryBList.get(i).getCategory_b_idx();
+			List<CategoryMVO> selectCateMList = new ArrayList<CategoryMVO>();
+			for(int j=0; j<categoryMList.size(); j++){
+				if(b_idx==categoryMList.get(j).getCategory_b_idx()){
+					// category_b_index가 i인 categoryM을 selectCateMList에 담는다
+					selectCateMList.add(categoryMList.get(j));
+					// 해당하는 categoryB의 인스턴스에 categoryMList를 셋팅
+					categoryBList.get(i).setCategoryML(selectCateMList);
+				}
+			}
+		} // categoryM 분류 끝
+		
+		mav.addObject("shopDefaultVO", shopDefaultVO);
+		mav.addObject("goodsList", goodsList);
+		mav.addObject("paginationInfo", paginationInfo);
+		mav.addObject("categoryBList", categoryBList);
+		mav.setViewName("eshopper/shop");
+		return mav;
+	}
+	
+	/**
+	 * 상품상세 조회
+	 * @param goodsVO
+	 * @return
+	 */
+	@RequestMapping("/details.do")
+	public ModelAndView details(GoodsVO goodsVO, ShopDefaultVO shopDefaultVO, HttpServletRequest req){
+		System.out.println(goodsVO.getGoods_idx());
+		// goods_idx 값을 셋팅
+		//RevQnaVO revQnaVO = new RevQnaVO();
+		// revQnaVO.setGoods_idx(goodsVO.getGoods_idx());
+		
+		List<CategoryBVO> categoryBList = categoryBService.selectCategoryBList(new CategoryBVO());
+		List<CategoryMVO> categoryMList = categoryBService.selectAllCategoryMlist(new CategoryMVO());
+		GoodsVO detailsGVO = goodsService.selectOneGoods(goodsVO);
+		// goods_idx값을 갖고 후기DB의 리스트를 불러옴  
+		List<RevQnaVO> revQnaList = revQnaService.selectRevQnaList(goodsVO.getGoods_idx());
+		System.out.println(revQnaList);
+		
+		/**categoryM을 분류별로 나눠 리스트에*/
+		for(int i=0; i<categoryBList.size(); i++){
+			int b_idx = categoryBList.get(i).getCategory_b_idx();
+			List<CategoryMVO> selectCateMList = new ArrayList<CategoryMVO>();
+			for(int j=0; j<categoryMList.size(); j++){
+				if(b_idx==categoryMList.get(j).getCategory_b_idx()){
+					// category_b_index가 i인 categoryM을 selectCateMList에 담는다
+					selectCateMList.add(categoryMList.get(j));
+					// 해당하는 categoryB의 인스턴스에 categoryMList를 셋팅
+					categoryBList.get(i).setCategoryML(selectCateMList);
+				}
+			}
+		} // categoryM 분류 끝
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("categoryBList", categoryBList);
+		mav.addObject("detailsGVO", detailsGVO);
+		mav.addObject("revQnaList", revQnaList);
+		mav.setViewName("/eshopper/productDetails");
+		return mav;
+	}
+	
+
+	/**
+	 * 
+	 * @param categoryBVO
+	 * @return
+	 */
+	@RequestMapping("/goodsInfo.do")
+	public ModelAndView categoryBList(@ModelAttribute CategoryBVO categoryBVO){
+		List<CategoryBVO> categoryBList = categoryBService.selectCategoryBList(categoryBVO);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("categoryBList", categoryBList);
+		mav.setViewName("eshopper/admin/goodsInfo");
+		return mav;
+	}
+	
+	/**
+	 * 상품정보 추가
+	 * @param goodsVO
+	 * @param req
+	 * @param resp
+	 * @param model
+	 * @return 추가과정 성공여부
+	 */
 	@RequestMapping("/goods_insert.do")
 	public String goodsInsert(GoodsVO goodsVO, HttpServletRequest req, HttpServletResponse resp, Model model){
 
@@ -66,38 +236,10 @@ public class GoodsController {
 			goodsService.insertGoods(goodsVO);
 			
 			success = "y";
-			model.addAttribute("success", success);
+			//model.addAttribute("success", success);
 		}
 		
 		model.addAttribute("success", success);
-		return "shop/admin/admin_main";
-	}
-	@RequestMapping("/shop.do")
-	public ModelAndView goodsList2(GoodsVO goodsVO, CategoryBVO categoryBVO, CategoryMVO categoryMVO){
-		ModelAndView mav = new ModelAndView();
-		
-		List<GoodsVO> goodsList = goodsService.selectGoodsList(goodsVO);
-		mav.addObject("goodsList", goodsList);
-		
-		List<CategoryBVO> categoryBList = categoryBService.selectCategoryBList(categoryBVO);
-		List<CategoryMVO> categoryMList = categoryBService.selectAllCategoryMlist(categoryMVO);
-		
-		//categoryM을 분류별로 나눠 리스트에
-		for(int i=0; i<categoryBList.size(); i++){
-			int b_idx = categoryBList.get(i).getCategory_b_idx();
-			List<CategoryMVO> selectCateMList = new ArrayList<CategoryMVO>();
-			for(int j=0; j<categoryMList.size(); j++){
-				if(b_idx==categoryMList.get(j).getCategory_b_idx()){
-					// category_b_index가 i인 categoryM을 selectCateMList에 담는다
-					selectCateMList.add(categoryMList.get(j));
-					// 해당하는 categoryB의 인스턴스에 categoryMList를 셋팅
-					categoryBList.get(i).setCategoryML(selectCateMList);
-				}
-			}
-		} // categoryM 분류 끝
-		
-		mav.addObject("categoryBList", categoryBList);
-		mav.setViewName("eshopper/index");
-		return mav;
+		return "eshopper/admin/goodsInfo";
 	}
 }

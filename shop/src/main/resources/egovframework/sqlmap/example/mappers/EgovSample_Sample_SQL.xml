@@ -92,9 +92,7 @@
 					</if>
 					ORDER BY ID ASC
 					)
-			) WHERE rnum BETWEEN #{recordCountPerPage} AND #{firstIndex}
-			<!-- WHERE rnum BETWEEN #{firstIndex} AND #{recordCountPerPage} -->
-			<!-- LIMIT #{recordCountPerPage} OFFSET #{firstIndex} -->
+			) WHERE rnum BETWEEN #{firstIndex}+1 AND #{firstIndex}+#{recordCountPerPage}
 	</select>
 
 	<select id="selectSampleListTotCnt" parameterType="searchVO" resultType="int">

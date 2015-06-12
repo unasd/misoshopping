@@ -81,5 +81,21 @@
 	<script src="js/price-range.js"></script>
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/main.js"></script>
+    <script>
+    
+    // 대분류 카테고리 이벤트처리기
+    $(".getCategoryBIdx").on("click", function(){
+    	var categoryBIdx = $(this).attr("idx");
+    	//alert(categoryBIdx);
+    	location.href = "/main.do?category_b_idx="+categoryBIdx;
+    });
+    
+ 	// 중분류 카테고리 이벤트처리기
+    $(".getCategoryMIdx").on("click", function(){
+    	var categoryMIdx = $(this).attr("idx");
+    	location.href = "/main.do?category_m_idx="+categoryMIdx;
+    });
+    
+    </script>
 </body>
 </html>

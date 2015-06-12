@@ -18,12 +18,14 @@ import org.springframework.stereotype.Service;
 
 import shop.service.GoodsService;
 import shop.service.GoodsVO;
+import shop.service.ShopDefaultVO;
+import egovframework.example.sample.service.SampleDefaultVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 @Service("GoodsService")
 public class GoodsServiceImpl extends EgovAbstractServiceImpl implements GoodsService {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(GoodsService.class); 
+	private static final Logger LOGGER = LoggerFactory.getLogger(GoodsServiceImpl.class); 
 	
 	@Resource(name="goodsMapper")
 	private GoodsMapper goodsDAO;
@@ -74,9 +76,23 @@ public class GoodsServiceImpl extends EgovAbstractServiceImpl implements GoodsSe
 	}
 
 	@Override
-	public List<GoodsVO> selectGoodsList(GoodsVO goodsVO) {
+	public List<GoodsVO> selectGoodsList(ShopDefaultVO ShopDefaultVO) {
+		// TODO Auto-generated method stub
+		LOGGER.debug(ShopDefaultVO.toString());
+		return goodsDAO.selectGoodsList(ShopDefaultVO);
+	}
+
+	@Override
+	public int selectGoodsListCnt(ShopDefaultVO shopDefaultVO) {
+		// TODO Auto-generated method stub
+		LOGGER.debug(shopDefaultVO.toString());
+		return goodsDAO.selectGoodsListCnt(shopDefaultVO);
+	}
+
+	@Override
+	public GoodsVO selectOneGoods(GoodsVO goodsVO) {
 		// TODO Auto-generated method stub
 		LOGGER.debug(goodsVO.toString());
-		return goodsDAO.selectGoodsList(goodsVO);
+		return goodsDAO.selectOneGoods(goodsVO);
 	}
 }

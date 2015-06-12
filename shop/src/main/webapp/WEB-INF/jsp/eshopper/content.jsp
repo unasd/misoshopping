@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 	<section>
 		<div class="container">
@@ -7,12 +8,17 @@
 						<h2>Category</h2>
 						
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title"><a href="/main.do" class="" idx="">전체</a></h4>
+							</div>
+						</div>
 						<c:forEach items="${categoryBList }" var="categoryB">
 							<c:choose>
 								<c:when test="${categoryB.categoryML eq null }">
 								<div class="panel panel-default">
 									<div class="panel-heading">
-										<h4 class="panel-title"><a href="#">${categoryB.category_b_desc }</a></h4>
+										<h4 class="panel-title"><a href="#" class="getCategoryBIdx" idx="${categoryB.category_b_idx }">${categoryB.category_b_desc }</a></h4>
 									</div>
 								</div>
 								</c:when>
@@ -29,8 +35,9 @@
 										<div id="${categoryB.category_b_name }" class="panel-collapse collapse">
 											<div class="panel-body">
 												<ul>
+													<li><a href="#" class="getCategoryBIdx" idx="${categoryB.category_b_idx }"><strong>${categoryB.category_b_desc }&nbsp;&nbsp; 전체</strong></a></li>
 												<c:forEach items="${categoryB.categoryML }" var="categoryM">
-													<li><a href="#">${categoryM.category_m_name } </a></li>
+													<li><a href="#" class="getCategoryMIdx" idx="${categoryM.category_m_idx }">${categoryM.category_m_desc } </a></li>
 												</c:forEach>
 												</ul>
 											</div>
@@ -46,12 +53,12 @@
 							<div class="brands-name">
 								<ul class="nav nav-pills nav-stacked">
 									<li><a href="#"> <span class="pull-right">(50)</span>Acne</a></li>
-									<li><a href="#"> <span class="pull-right">(56)</span>Gr�ne Erde</a></li>
+									<li><a href="#"> <span class="pull-right">(56)</span>Grüne Erde</a></li>
 									<li><a href="#"> <span class="pull-right">(27)</span>Albiro</a></li>
 									<li><a href="#"> <span class="pull-right">(32)</span>Ronhill</a></li>
 									<li><a href="#"> <span class="pull-right">(5)</span>Oddmolly</a></li>
 									<li><a href="#"> <span class="pull-right">(9)</span>Boudestijn</a></li>
-									<li><a href="#"> <span class="pull-right">(4)</span>R�sch creative culture</a></li>
+									<li><a href="#"> <span class="pull-right">(4)</span>Rösch creative culture</a></li>
 								</ul>
 							</div>
 						</div>/brands_products
@@ -83,14 +90,14 @@
 								<div class="single-products">
 										<div class="productinfo text-center">
 											<img src="${pageContext.request.contextPath}/upload/upimg/thumb/${goods.goods_thumb }" alt="" />
-											<h2>${goods.goods_price } Won</h2>
+											<h2>${goods.goods_price } 원</h2>
 											<h3>${goods.goods_name }</h3>
 											<p>${goods.goods_desc }</p>
 											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 										</div>
 										<div class="product-overlay">
 											<div class="overlay-content">
-												<h2>${goods.goods_price } Won</h2>
+												<h2>${goods.goods_price } 원</h2>
 												<p>${goods.goods_name }</p>
 												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 											</div>
@@ -105,34 +112,8 @@
 							</div>
 						</div>
 						</c:forEach>
-						<!-- 
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products">
-									<div class="productinfo text-center">
-										<img src="images/home/product6.jpg" alt="" />
-										<h2>$56</h2>
-										<p>Easy Polo Black Edition</p>
-										<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-									</div>
-									<div class="product-overlay">
-										<div class="overlay-content">
-											<h2>$56</h2>
-											<p>Easy Polo Black Edition</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-										</div>
-									</div>
-								</div>
-								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						 -->
 					</div><!--features_items-->
+					
 					<!-- 
 					<div class="category-tab">category-tab
 						<div class="col-sm-12">
@@ -422,6 +403,7 @@
 						</div>
 					</div>/category-tab
 					 -->
+					 
 					 <!-- 
 					<div class="recommended_items">recommended_items
 						<h2 class="title text-center">recommended items</h2>

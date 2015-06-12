@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.service.impl.RevQnaMapper">
+	
+	<insert id="insertRevQna" parameterType="RevQnaVO">
+		insert into REVIEW_QNA(
+			REVIEW_QNA_IDX
+			, GOODS_IDX
+			, REVIEW_QNA_WRITER
+			, REVIEW_QNA_CONTENT
+			, REVIEW_QNA_SUBJECT
+			, REVIEW_QNA_REGDATE
+			, REVIEW_OR_QNA
+			<!-- <if test="MEMBER_IDX != 0"> -->
+			, MEMBER_IDX
+			<!-- </if> -->
+		) values (
+			REVIEW_QNA_SEQ.nextval
+			, #{goods_idx}
+			, #{review_qna_writer}
+			, #{review_qna_content}
+			, #{review_qna_subject}
+			, to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS')
+			, #{review_or_qna}
+			<!-- <if test="MEMBER_IDX != 0"> -->
+			, #{member_idx}
+			<!-- </if> -->
+		)
+	</insert>
+	
+	<select id="selectRevQnaList" parameterType="int" resultType="RevQnaVO">
+		SELECT * FROM(
+			SELECT 
+				REVIEW_QNA_IDX, GOODS_IDX, REVIEW_QNA_WRITER, REVIEW_QNA_CONTENT
+				, REVIEW_QNA_SUBJECT, REVIEW_QNA_REGDATE, REVIEW_OR_QNA, MEMBER_IDX, ROWNUM AS RNUM
+			FROM(
+				SELECT
+					REVIEW_QNA_IDX, GOODS_IDX, REVIEW_QNA_WRITER, REVIEW_QNA_CONTENT
+				, REVIEW_QNA_SUBJECT, REVIEW_QNA_REGDATE, REVIEW_OR_QNA, NVL(MEMBER_IDX, 0) AS MEMBER_IDX
+				FROM
+					REVIEW_QNA
+					WHERE 1=1 
+						AND GOODS_IDX = #{goods_idx}
+						<!-- AND REVIEW_OR_QNA = #{} -->
+					ORDER BY REVIEW_QNA_REGDATE ASC
+			)
+		) <!-- WHERE rnum BETWEEN 1 AND 10 -->
+	</select>
+	
+</mapper>

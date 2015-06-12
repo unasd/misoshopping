@@ -20,24 +20,52 @@
 			, #{goods_img}
 			, #{goods_thumb}
 			, goods_seq.nextval
-			, to_char(sysdate, 'YYYY-MM-DD HH:MI:SS')
+			, to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 			, #{category_b_idx}
 			, #{category_m_idx}
 		)
 	</insert>
 	
-	<select id="selectGoodsList" parameterType="GoodsVO" resultType="GoodsVO">
-		SELECT
-			goods_name
-			, SUBSTR(TRIM(goods_desc), 1, 10) AS goods_desc
-			, goods_price
-			, goods_thumb
-			, goods_idx
-			, goods_regdate
-			, category_b_idx
-			, category_m_idx
-		FROM
-			GOODS
-		ORDER BY goods_regdate DESC	
+	<!-- 카테고리별 상품조회 조건문 -->
+	<sql id="goodsWhere"> 	
+		<if test="b_idx != 0">
+			AND CATEGORY_B_IDX = #{b_idx}
+		</if>
+		<if test="m_idx != 0">
+			AND category_m_idx = #{m_idx}
+		</if> 
+	</sql>
+	
+	<select id="selectGoodsList" parameterType="ShopDefaultVO" resultType="GoodsVO">
+		SELECT * FROM(
+			SELECT 
+				goods_name, goods_desc, goods_price, goods_thumb, goods_idx
+				, goods_regdate, category_b_idx, category_m_idx, rownum as rnum 
+			FROM(
+				SELECT
+					goods_name, SUBSTR(TRIM(goods_desc), 1, 10) AS goods_desc, goods_price
+					, goods_thumb, goods_idx, goods_regdate, category_b_idx, category_m_idx
+				FROM
+					GOODS
+					WHERE 1=1
+				<include refid="goodsWhere" />
+				<!-- ORDER BY goods_regdate DESC -->
+				ORDER BY ${orderValue} ${ascDesc}
+			 	)
+		) WHERE rnum BETWEEN #{firstIndex}+1 AND #{firstIndex}+#{recordCountPerPage}
+		<!-- ) WHERE rnum BETWEEN 1 AND 9 -->
+	</select>
+	
+	<select id="selectGoodsListCnt" parameterType="ShopDefaultVO" resultType="int">
+		SELECT COUNT(*) totcnt
+		FROM GOODS
+		WHERE 1=1
+		<include refid="goodsWhere" />
+	</select>
+	
+	<select id="selectOneGoods" parameterType="int" resultType="GoodsVO">
+		SELECT * 
+		FROM GOODS
+		WHERE goods_idx=#{goods_idx}
 	</select>
 </mapper>

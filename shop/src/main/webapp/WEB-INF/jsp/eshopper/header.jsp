@@ -1,5 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <header id="header"><!--header-->
-		<div class="header_top"><!--header_top-->
+		<!-- 
+		<div class="header_top">header_top
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-6">
@@ -23,14 +25,14 @@
 					</div>
 				</div>
 			</div>
-		</div><!--/header_top-->
-		
+		</div>/header_top
+		 -->
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="images/home/logo.png" alt="" /></a>
+							<a href="/main.do"><img src="images/home/logo.png" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right">
 							<div class="btn-group">
@@ -85,27 +87,40 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.html" class="active">Home</a></li>
+								<li><a href="/main.do" class="active">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="shop.html">Products</a></li>
-										<li><a href="product-details.html">Product Details</a></li> 
+                                        <li><a href="/shop.do">Products</a></li>
+										<li><a href="/details.do">Product Details</a></li> 
 										<li><a href="checkout.html">Checkout</a></li> 
 										<li><a href="cart.html">Cart</a></li> 
 										<li><a href="login.html">Login</a></li> 
                                     </ul>
                                 </li> 
-								<li class="dropdown"><a href="#"><i class="fa fa-angle-down"></i></a>
+								<li class="dropdown"><a href="#">Admin<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="blog.html">Blog List</a></li>
-										<li><a href="blog-single.html">Blog Single</a></li>
+                                        <li><a href="/goodsInfo.do">Product Management</a></li>
+										<li><a href="blog-single.html">Stock Management</a></li>
                                     </ul>
                                 </li> 
-								<li><a href="404.html">404</a></li>
-								<li><a href="contact-us.html">Contact</a></li>
+								<!-- <li><a href="404.html">404</a></li>
+								<li><a href="contact-us.html">Contact</a></li> -->
 							</ul>
 						</div>
 					</div>
+					<!-- 정렬기준 선택 -->
+					<!-- <div class="col-sm-1">
+						<select id="orderByValue" name="orderByValue" class="order" style="width: 100px;">
+			                <option value="goods_regdate">등록일순</option>
+							<option value="goods_price">가격순</option>
+		                </select>
+	                </div>		
+		            <div class="col-sm-1">    
+						<select id="ascDesc" name="ascDesc" class="order" style="width: 100px;">
+			                <option value="desc">역순정렬</option>
+							<option value="asc">순차정렬</option>
+		                </select>
+		            </div> -->
 					<div class="col-sm-3">
 						<div class="search_box pull-right">
 							<input type="text" placeholder="Search"/>
