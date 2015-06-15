@@ -88,6 +88,30 @@
 						            <input type="file" id="goods_file" name="goods_file" class="form-control" style="height: 40px"/>
 						        <!-- </div>  -->
 						    </div>
+						    <hr/>
+						    <div class="form-group">
+						    	<label for="is_color" class="col-sm-3 control-label">색상옵션 유무</label>
+						    	<input type="checkbox" id="is_color" name="is_color" value="y" class="form-control option" style="width: 14px; height: 14px;"><br/>
+						    	<div class="addOption" style="display: none;">
+						    		<!-- <label for="is_color" class="col-sm-3 control-label">옵션1</label> -->
+						    		<input type="text" name="color_option0"  class="form-control" style="width: 100px" placeholder="옵션1"/>
+						    		<input type="text" name="color_option1"  class="form-control" style="width: 100px" placeholder="옵션2" />
+						    		<input type="text" name="color_option2"  class="form-control" style="width: 100px" placeholder="옵션3" />
+						    		<input type="hidden" name="color_option" value="3"/>
+						    	</div>
+						    	<input type="button" class="addOption btn btn-info addOption" value="옵션행 추가" style="display: none;"/>
+						    </div>
+						    <div class="form-group">
+						    	<label for="is_size" class="col-sm-3 control-label">사이즈옵션 유무</label>
+						    	<input type="checkbox" name="is_size" value="y" class="form-control option" style="width: 14px; height: 14px;"><br/>
+						    	<div class="addOption" style="display: none;">
+						    		<input type="text" name="size_option0" class="form-control" style="width: 100px" placeholder="옵션1" />
+						    		<input type="text" name="size_option1" class="form-control" style="width: 100px" placeholder="옵션2" />
+						    		<input type="text" name="size_option2" class="form-control" style="width: 100px" placeholder="옵션3" />
+						    		<input type="hidden" name="size_option" value="3"/>
+						    	</div>
+						    	<input type="button" class="addOption btn btn-info addOption" value="옵션행 추가" style="display: none;"/>
+						    </div>
 						    <div class="form-group">
 						        <label for="goods_img" class="col-sm-4 control-label"></label>
 						        <!-- <div class="col-sm-3"> -->
@@ -206,7 +230,7 @@
 		
 	//$(document).ready(function($){
 		// 폼 유효성 검사
-		$("#goods_form").validate({
+		var validator = $("#goods_form").validate({
 			rules:{
 				goods_name:{
 					required: true
@@ -233,6 +257,24 @@
 			}
 		});
 		
+		/* $("#goods_form").on("submit", function(){
+			var length = $("[name^='color_options']").length;
+			for(var i=0; i<length; i++){
+				$("[name='color_options"+i+"']").rules("add", {
+					required: "#is_color:checked"
+			    });
+			}
+		}); */
+		
+		/* $.validator.addMethod("test", function(){
+			var length = $("[name^='color_options']").length;
+			for(var i=0; i<length; i++){
+				$("[name='color_options"+i+"']").rules("add", {
+					required: "#is_color:checked"
+			    });
+			}
+		}); */
+		
 		// 분류선택검증 메소드
 		$.validator.addMethod("valueNotEquals", function(value, element, arg){
 			  return arg != value;
@@ -247,7 +289,7 @@
 			},"Insert "
 		); */
 		
-		// 
+		// 첨부이미지 확인
 		/* $("#goods_file").on("change", function(){
 			var imgSrc = $(this).val();
 			$("#target").attr("src", imgSrc);
@@ -257,9 +299,33 @@
 		var message = '${success}'; 
 		if(message == 'y'){
 	 		alert('입력완료'); 
+	 		location.href = "/goodsInfo.do";
 		} else if (message == 'n'){
 			alert('입력오류');
+	 		location.href = "/goodsInfo.do";
 		}
+		
+		// 옵션추가 체크박스
+		$(".option").on("click", function(){
+			if($(this).prop("checked")){
+				$(this).parent().children(".addOption").show();
+			} else {
+				$(this).parent().children(".addOption").attr("style", "display:none;");
+			}
+		});
+		
+		// 옵션행추가 이벤트
+		$(".addOption").on("click", function(){
+			$copiedRow = $(this).siblings("div").children("input:text:last").clone(true);
+			lastIndex = $(this).siblings("div").children("input:text").length;
+			$hidden = $(this).siblings("div").children("input:hidden");
+			$copiedRow.attr("placeholder", "옵션"+(lastIndex+1));
+			$copiedRow.attr("name", $hidden.attr("name")+lastIndex);
+			$copiedRow.val('');
+			$(this).siblings("div").append($copiedRow);
+			$hidden.val($(this).siblings("div").children("input:text").length);
+		});
 	//});
 	</script>
 </body>
+</html>

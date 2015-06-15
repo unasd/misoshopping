@@ -18,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -164,7 +165,7 @@ public class GoodsController {
 		GoodsVO detailsGVO = goodsService.selectOneGoods(goodsVO);
 		// goods_idx값을 갖고 후기DB의 리스트를 불러옴  
 		List<RevQnaVO> revQnaList = revQnaService.selectRevQnaList(goodsVO.getGoods_idx());
-		System.out.println(revQnaList);
+		// @확인용 System.out.println(revQnaList);
 		
 		/**categoryM을 분류별로 나눠 리스트에*/
 		for(int i=0; i<categoryBList.size(); i++){
@@ -213,12 +214,33 @@ public class GoodsController {
 	 * @return 추가과정 성공여부
 	 */
 	@RequestMapping("/goods_insert.do")
-	public String goodsInsert(GoodsVO goodsVO, HttpServletRequest req, HttpServletResponse resp, Model model){
-
+	public ModelAndView goodsInsert(GoodsVO goodsVO, HttpServletRequest req, HttpServletResponse resp){
+		
+		ModelAndView mav = new ModelAndView();
 		String success = "n";
 		MultipartFile goods_file = goodsVO.getGoods_file();
 		String originFileName = goods_file.getOriginalFilename();
 		String genId = UUID.randomUUID().toString();
+		
+		/** 색상옵션 셋팅 */
+		if(goodsVO.getIs_color().equals("y")){
+			String resultOption="";
+			int colorCount = Integer.parseInt(req.getParameter("color_option"));
+			for(int i=0; i<colorCount; i++){
+				resultOption = resultOption+req.getParameter("color_option"+i)+"/";
+			}
+			goodsVO.setColor_option(resultOption);
+		}
+		
+		/** 사이즈옵션 셋팅 */
+		if(goodsVO.getIs_size().equals("y")){
+			String resultOption="";
+			int sizeCount = Integer.parseInt(req.getParameter("size_option"));
+			for(int i=0; i<sizeCount; i++){
+				resultOption = resultOption+req.getParameter("size_option"+i)+"/";
+			}
+			goodsVO.setSize_option(resultOption);
+		}
 		
 		// 업로드된 파일이 이미지 파일이라면 
 		if(goods_file.getContentType().contains("image")){
@@ -235,11 +257,13 @@ public class GoodsController {
 			// 셋팅된 goodsVO를 goodsService를 통해 insert
 			goodsService.insertGoods(goodsVO);
 			
+			// 입력완료 메시지
 			success = "y";
 			//model.addAttribute("success", success);
-		}
+		} // if 끝
 		
-		model.addAttribute("success", success);
-		return "eshopper/admin/goodsInfo";
+		mav.setViewName("eshopper/admin/goodsInfo");
+		mav.addObject("success", success);
+		return mav;
 	}
 }

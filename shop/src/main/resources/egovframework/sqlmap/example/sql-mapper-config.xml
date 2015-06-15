@@ -10,6 +10,8 @@
 		<typeAlias type="shop.service.GoodsVO" alias="GoodsVO"/>
 		<typeAlias type="shop.service.ShopDefaultVO" alias="ShopDefaultVO"/>
 		<typeAlias type="shop.service.RevQnaVO" alias="RevQnaVO"/>
+		<typeAlias type="shop.service.StockVO" alias="StockVO"/>
 		<typeAlias type="egovframework.rte.psl.dataaccess.util.EgovMap" alias="egovMap"/>
     </typeAliases>
+    
 </configuration>

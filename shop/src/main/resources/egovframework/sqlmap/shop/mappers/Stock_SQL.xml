@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.service.impl.StockMapper">
+	<insert id="insertStock" parameterType="StockVO">
+		insert into STOCK(
+			goods_idx
+			, stock_size
+			, stock_amount
+			, stock_color
+		) values (
+			#{goods_idx}
+			, #{stock_size}
+			, 0
+			, #{stock_color}		
+		)
+	</insert>
+	
+</mapper>

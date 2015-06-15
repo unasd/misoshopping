@@ -177,17 +177,19 @@
 							
 							<div class="tab-pane fade active in" id="reviews" >
 								<div class="col-sm-12">
-									<c:forEach items="${revQnaList }" var="revQna">
-										<c:if test="${revQna.review_or_qna eq 'r' }">
-										<ul>
-											<li><a href="#"><i class="fa fa-calendar-o"></i>${revQna.review_qna_subject }</a></li>
-											<li><a href="#"><i class="fa fa-user"></i>${revQna.review_qna_writer }</a></li>
-											<li><a href="#"><i class="fa fa-clock-o"></i>${revQna.review_qna_regdate }</a></li>
-										</ul>
-										<p>${revQna.review_qna_content }</p>
-										<hr/>
-										</c:if>
-									</c:forEach>
+									<div id="reviewsDiv">
+										<c:forEach items="${revQnaList }" var="revQna">
+											<c:if test="${revQna.review_or_qna eq 'r' }">
+											<ul>
+												<li><a href="#"><i class="fa fa-calendar-o"></i>${revQna.review_qna_subject }</a></li>
+												<li><a href="#"><i class="fa fa-user"></i>${revQna.review_qna_writer }</a></li>
+												<li><a href="#"><i class="fa fa-clock-o"></i>${revQna.review_qna_regdate }</a></li>
+											</ul>
+											<p>${revQna.review_qna_content }</p>
+											<hr/>
+											</c:if>
+										</c:forEach>
+									</div>
 									<p><b>Write Your Review</b></p>
 									<label for="review_or_qna"></label>
 									<form class="revQnaForm" action="#">
@@ -195,10 +197,10 @@
 										<input type="hidden" name="goods_idx" value="${detailsGVO.goods_idx }"/>
 										<%-- <input type="hidden" name="member_idx" value="${detailsGVO.member_idx }"/> --%>
 										<span>
-											<input type="text" name="review_qna_subject" placeholder="제목" title="제목을 입력하세요."/>
-											<input type="text" name="review_qna_writer" placeholder="작성자" title="작성자명을 입력하세요."/>
+											<input type="text" name="review_qna_subject" class="input" placeholder="제목" title="제목을 입력하세요."/>
+											<input type="text" name="review_qna_writer" class="input" placeholder="작성자" title="작성자명을 입력하세요."/>
 										</span>
-										<textarea name="review_qna_content" title="본문을 입력하세요."></textarea><br/>
+										<textarea name="review_qna_content" class="input" title="본문을 입력하세요."></textarea><br/>
 										<!-- <b>Rating: </b> <img src="images/product-details/rating.png" alt="" /> -->
 										<button type="button" class="btn btn-default pull-right revQna">
 											Submit
@@ -311,7 +313,7 @@
 					</div><!--/category-tab-->
 				</div>
 			</div>
-		</div>
+		<!-- </div> -->
 	</section>
 	
 	<%@include file="footer.jsp" %>
@@ -324,7 +326,7 @@
 	<script src="js/messages_ko.js"></script>
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/main.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript"  charset="utf-8">
     // 대분류 카테고리 이벤트처리기
     $(".getCategoryBIdx").on("click", function(){
     	var categoryBIdx = $(this).attr("idx");
@@ -374,7 +376,7 @@
 			type: "POST"
 			, dataType: "json"
 			, url: "/revQna/revAdd.do"
-			, contentType: "application/json"
+			//, contentType: "application/json"
 			, data: formData
 			, success: revQnaAdded
 			, error: revQnaAddErr
@@ -383,10 +385,21 @@
  	
  	// 게시글 입력 후 작업 // 목록 새로고침
  	function revQnaAdded(msg){
- 		alert(msg);
- 		location.href = "/details.do?goods_idx="+${detailsGVO.goods_idx };
- 		//var JsonData = $.parseJSON(msg);
- 		//alert(JsonData);
+ 		//alert(decodeURIComponent(msg[2].review_qna_subject));
+ 		$("#reviewsDiv").children().remove();
+ 		var reviewOne;
+ 		for(var i=0; i<msg.length; i++){
+ 			reviewOne = "<ul>"
+ 			+"<li><a href='#'><i class='fa fa-calendar-o'></i>"+msg[i].review_qna_subject+"</a></li>"
+ 			+"<li><a href='#'><i class='fa fa-user'></i>"+msg[i].review_qna_writer+"</a></li>"
+ 			+"<li><a href='#'><i class='fa fa-clock-o'></i>"+msg[i].review_qna_regdate+"</a></li>"
+			+"</ul>"
+			+"<p>"+msg[i].review_qna_content+"</p>"
+			+"<hr/>";
+			//var temp = decodeURI(reviewOne);
+			$("#reviewsDiv").append(reviewOne);
+ 		}
+ 		$(".input").val('');
  	};
  	
  	function revQnaAddErr(xhr,status,error){

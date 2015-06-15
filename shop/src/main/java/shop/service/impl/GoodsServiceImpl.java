@@ -27,6 +27,7 @@ public class GoodsServiceImpl extends EgovAbstractServiceImpl implements GoodsSe
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GoodsServiceImpl.class); 
 	
+	
 	@Resource(name="goodsMapper")
 	private GoodsMapper goodsDAO;
 	

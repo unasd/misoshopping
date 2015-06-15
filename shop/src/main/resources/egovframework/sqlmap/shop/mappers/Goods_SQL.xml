@@ -13,6 +13,10 @@
 			, goods_regdate
 			, category_b_idx
 			, category_m_idx
+			, is_color
+			, color_option
+			, is_size
+			, size_option
 		) VALUES (
 			#{goods_name}
 			, #{goods_desc}
@@ -23,6 +27,10 @@
 			, to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 			, #{category_b_idx}
 			, #{category_m_idx}
+			, #{is_color}
+			, #{color_option}
+			, #{is_size}
+			, #{size_option}
 		)
 	</insert>
 	

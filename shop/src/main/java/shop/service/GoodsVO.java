@@ -13,6 +13,11 @@ public class GoodsVO {
 	private String goods_regdate;
 	private int category_b_idx;
 	private int category_m_idx;
+	private String is_color="n";
+	private String color_option="n";
+	private String is_size="n";
+	private String size_option="n";
+	
 	
 	public String getGoods_name() {
 		return goods_name;
@@ -74,4 +79,29 @@ public class GoodsVO {
 	public void setGoods_file(MultipartFile goods_file) {
 		this.goods_file = goods_file;
 	}
+	public String getIs_color() {
+		return is_color;
+	}
+	public void setIs_color(String is_color) {
+		this.is_color = is_color;
+	}
+	public String getColor_option() {
+		return color_option;
+	}
+	public void setColor_option(String color_option) {
+		this.color_option = color_option;
+	}
+	public String getIs_size() {
+		return is_size;
+	}
+	public void setIs_size(String is_size) {
+		this.is_size = is_size;
+	}
+	public String getSize_option() {
+		return size_option;
+	}
+	public void setSize_option(String size_option) {
+		this.size_option = size_option;
+	}
+	
 }
