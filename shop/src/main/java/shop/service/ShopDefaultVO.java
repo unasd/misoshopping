@@ -55,10 +55,10 @@ public class ShopDefaultVO implements Serializable {
 	private int pageIndex = 1;
 
 	/** 페이지갯수 */
-	private int pageUnit = 3;
+	private int pageUnit = 9;
 
 	/** 페이지사이즈 */
-	private int pageSize = 3;
+	private int pageSize = 9;
 
 	/** firstIndex */
 	private int firstIndex = 1;
@@ -67,7 +67,7 @@ public class ShopDefaultVO implements Serializable {
 	private int lastIndex = 1;
 
 	/** recordCountPerPage */
-	private int recordCountPerPage = 3;
+	private int recordCountPerPage = 9;
 	
 	/** 대분류 인덱스 */
 	private int b_idx;

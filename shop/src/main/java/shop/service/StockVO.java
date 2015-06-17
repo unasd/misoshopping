@@ -2,9 +2,11 @@ package shop.service;
 
 public class StockVO {
 	private int goods_idx;
-	private String stock_size;
+	private String stock_size="n";
 	private int stock_amount;
-	private String stock_color;
+	private String stock_color="n";
+	private String goods_name="";
+	private String category_b_name="";
 	
 	public int getGoods_idx() {
 		return goods_idx;
@@ -29,5 +31,17 @@ public class StockVO {
 	}
 	public void setStock_color(String stock_color) {
 		this.stock_color = stock_color;
+	}
+	public String getGoods_name() {
+		return goods_name;
+	}
+	public void setGoods_name(String goods_name) {
+		this.goods_name = goods_name;
+	}
+	public String getCategory_b_name() {
+		return category_b_name;
+	}
+	public void setCategory_b_name(String category_b_name) {
+		this.category_b_name = category_b_name;
 	}
 }

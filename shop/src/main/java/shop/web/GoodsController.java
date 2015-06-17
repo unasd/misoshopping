@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.example.sample.service.SampleDefaultVO;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import shop.StockService;
 import shop.service.CategoryBService;
 import shop.service.CategoryBVO;
 import shop.service.CategoryMVO;
@@ -43,6 +44,8 @@ public class GoodsController {
 	private CategoryBService categoryBService;
 	@Resource(name="RevQnaService")
 	private RevQnaService revQnaService;
+	@Resource(name="StockService")
+	private StockService stockService;
 	
 	/**
 	 * 메인페이지 로딩
@@ -215,19 +218,21 @@ public class GoodsController {
 	 */
 	@RequestMapping("/goods_insert.do")
 	public ModelAndView goodsInsert(GoodsVO goodsVO, HttpServletRequest req, HttpServletResponse resp){
-		
 		ModelAndView mav = new ModelAndView();
 		String success = "n";
 		MultipartFile goods_file = goodsVO.getGoods_file();
 		String originFileName = goods_file.getOriginalFilename();
 		String genId = UUID.randomUUID().toString();
+		String toStockColor[] = null, toStockSize[] = null;
 		
 		/** 색상옵션 셋팅 */
 		if(goodsVO.getIs_color().equals("y")){
 			String resultOption="";
 			int colorCount = Integer.parseInt(req.getParameter("color_option"));
+			toStockColor = new String[colorCount];
 			for(int i=0; i<colorCount; i++){
 				resultOption = resultOption+req.getParameter("color_option"+i)+"/";
+				toStockColor[i] = req.getParameter("color_option"+i);
 			}
 			goodsVO.setColor_option(resultOption);
 		}
@@ -236,8 +241,10 @@ public class GoodsController {
 		if(goodsVO.getIs_size().equals("y")){
 			String resultOption="";
 			int sizeCount = Integer.parseInt(req.getParameter("size_option"));
+			toStockSize = new String[sizeCount];
 			for(int i=0; i<sizeCount; i++){
 				resultOption = resultOption+req.getParameter("size_option"+i)+"/";
+				toStockSize[i] = req.getParameter("size_option"+i);
 			}
 			goodsVO.setSize_option(resultOption);
 		}
@@ -254,8 +261,11 @@ public class GoodsController {
 			// goodsVO에 지정된 경로로 파일저장
 			goodsService.saveImage(goodsVO, req);
 			
-			// 셋팅된 goodsVO를 goodsService를 통해 insert
+			// 셋팅된 goodsVO insert
 			goodsService.insertGoods(goodsVO);
+			
+			// 입력받은 재고정보 insert
+			stockService.insertStockInfos(goodsVO.getGoods_idx(), toStockColor, toStockSize);
 			
 			// 입력완료 메시지
 			success = "y";

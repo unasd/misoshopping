@@ -99,7 +99,8 @@
 						    		<input type="text" name="color_option2"  class="form-control" style="width: 100px" placeholder="옵션3" />
 						    		<input type="hidden" name="color_option" value="3"/>
 						    	</div>
-						    	<input type="button" class="addOption btn btn-info addOption" value="옵션행 추가" style="display: none;"/>
+						    	<input type="button" class="addOption btn btn-info addOptionBtn" value="옵션행 추가" style="display: none;"/>
+						    	<input type="button" class="addOption btn btn-danger removeOptionBtn" value="옵션행 삭제" style="display: none;"/>
 						    </div>
 						    <div class="form-group">
 						    	<label for="is_size" class="col-sm-3 control-label">사이즈옵션 유무</label>
@@ -110,7 +111,8 @@
 						    		<input type="text" name="size_option2" class="form-control" style="width: 100px" placeholder="옵션3" />
 						    		<input type="hidden" name="size_option" value="3"/>
 						    	</div>
-						    	<input type="button" class="addOption btn btn-info addOption" value="옵션행 추가" style="display: none;"/>
+						    	<input type="button" class="addOption btn btn-info addOptionBtn" value="옵션행 추가" style="display: none;"/>
+						    	<input type="button" class="addOption btn btn-danger removeOptionBtn" value="옵션행 삭제" style="display: none;"/>
 						    </div>
 						    <div class="form-group">
 						        <label for="goods_img" class="col-sm-4 control-label"></label>
@@ -266,14 +268,13 @@
 			}
 		}); */
 		
-		/* $.validator.addMethod("test", function(){
-			var length = $("[name^='color_options']").length;
+			/* var length = $("[name$='_options']").length;
+			alert(length);
 			for(var i=0; i<length; i++){
-				$("[name='color_options"+i+"']").rules("add", {
+				$("[name$='_options"+i+"']").rules("add", {
 					required: "#is_color:checked"
 			    });
-			}
-		}); */
+			} */
 		
 		// 분류선택검증 메소드
 		$.validator.addMethod("valueNotEquals", function(value, element, arg){
@@ -307,24 +308,71 @@
 		
 		// 옵션추가 체크박스
 		$(".option").on("click", function(){
+			
 			if($(this).prop("checked")){
 				$(this).parent().children(".addOption").show();
+				
+				/* var optionName = $(this).attr("name");
+				var hidden = $(this).siblings("div").children("input:hidden").attr("name");
+				alert(optionName+"/"+hidden);
+				
+				for(var i=0; i<3; i++){
+					$("[name='"+hidden+i+"']").rules("add", {
+						required: "#"+optionName+":checked"
+				    });
+				} */
 			} else {
 				$(this).parent().children(".addOption").attr("style", "display:none;");
+				/* var optionName = $(this).attr("name");
+				var hidden = $(this).siblings("div").children("input:hidden").attr("name");
+				
+				for(var i=0; i<3; i++){
+					$("[name='"+hidden+i+"']").rules("remove", {
+						required: "#"+optionName+":checked"
+				    });
+				} */
 			}
+
+			
 		});
 		
 		// 옵션행추가 이벤트
-		$(".addOption").on("click", function(){
-			$copiedRow = $(this).siblings("div").children("input:text:last").clone(true);
-			lastIndex = $(this).siblings("div").children("input:text").length;
-			$hidden = $(this).siblings("div").children("input:hidden");
-			$copiedRow.attr("placeholder", "옵션"+(lastIndex+1));
+		$(".addOptionBtn").on("click", function(){
+			var $copiedRow = $(this).siblings("div").children("input:text:last").clone(true);   // 마지막 옵션 복사
+			var $hidden = $(this).siblings("div").children("input:hidden");						// 옵션의 개수를 넘길 hidden input
+			var lastIndex = $(this).siblings("div").children("input:text").length;				// 추가 전 옵션 개수 
+			
+			$copiedRow.attr("placeholder", "옵션"+(lastIndex+1));							// 
 			$copiedRow.attr("name", $hidden.attr("name")+lastIndex);
 			$copiedRow.val('');
 			$(this).siblings("div").append($copiedRow);
 			$hidden.val($(this).siblings("div").children("input:text").length);
-		});
+			
+			var is_option = $(this).siblings("input:checkbox").attr("name");
+			var optionName = $(this).siblings("div").children("input:text:last").attr("name");
+			$("[name='"+optionName+"']").rules("add", {required: "#"+is_option+":checked"});		// 새로운 옵션행에 유효성검증
+		}); // 옵션행추가 끝
+		
+		
+		// 옵션행삭제 이벤트
+		$(".removeOptionBtn").on("click", function(){
+			var lastIndex = $(this).siblings("div").children("input:text").length;
+			if(lastIndex>2){
+				$(this).siblings("div").children("input:text:last").remove();		// 마지막 옵션 삭제
+				$(this).siblings("div").children("label:last").remove();			// 유효성 에러라벨 삭제
+				var $hidden = $(this).siblings("div").children("input:hidden");			// 옵션의 개수를 넘길 hidden input
+				
+				$hidden.val($(this).siblings("div").children("input:text").length); // 삭제 후 옵션 개수를 입력
+				
+				var is_option = $(this).siblings("input:checkbox").attr("name");
+				var optionName = $(this).siblings("div").children("input:text:last").attr("name");
+				//$("[name='"+optionName+"']").rules("remove", {required: "#"+is_option+":checked"});
+				$("[name='"+optionName+"']").rules("remove", {required: "#is_color:checked"});
+				
+			} else {
+				alert("더 이상 삭제할 수 없습니다.");
+			}
+		}); // 옵션행삭제 끝
 	//});
 	</script>
 </body>

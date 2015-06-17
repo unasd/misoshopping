@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -56,37 +57,15 @@
 						</c:forEach>
 						</div><!--/category-productsr-->
 					
-						<!-- 
-						<div class="brands_products">brands_products
-							<h2>Brands</h2>
-							<div class="brands-name">
-								<ul class="nav nav-pills nav-stacked">
-									<li><a href=""> <span class="pull-right">(50)</span>Acne</a></li>
-									<li><a href=""> <span class="pull-right">(56)</span>Grüne Erde</a></li>
-									<li><a href=""> <span class="pull-right">(27)</span>Albiro</a></li>
-									<li><a href=""> <span class="pull-right">(32)</span>Ronhill</a></li>
-									<li><a href=""> <span class="pull-right">(5)</span>Oddmolly</a></li>
-									<li><a href=""> <span class="pull-right">(9)</span>Boudestijn</a></li>
-									<li><a href=""> <span class="pull-right">(4)</span>Rösch creative culture</a></li>
-								</ul>
-							</div>
-						</div>/brands_products
-						 -->
-						
-						<div class="price-range"><!--price-range-->
+					<!-- 
+						<div class="price-range">price-range
 							<h2>Price Range</h2>
 							<div class="well">
 								 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2" ><br />
 								 <b>$ 0</b> <b class="pull-right">$ 600</b>
 							</div>
-						</div><!--/price-range-->
-						
-						<!-- 
-						<div class="shipping text-center">shipping
-							<img src="images/home/shipping.jpg" alt="" />
-						</div>/shipping
+						</div>/price-range
 						 -->
-						
 					</div>
 				</div>
 				
@@ -97,36 +76,7 @@
 								<img src="${pageContext.request.contextPath }/upload/upimg/${detailsGVO.goods_img}" alt="" />
 								<!-- <h3>ZOOM</h3> -->
 							</div>
-							<!-- <div id="similar-product" class="carousel slide" data-ride="carousel">
-								
-								  Wrapper for slides
-								    <div class="carousel-inner">
-										<div class="item active">
-										  <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-										  <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-										  <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
-										</div>
-										<div class="item">
-										  <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-										  <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-										  <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
-										</div>
-										<div class="item">
-										  <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-										  <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-										  <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
-										</div>
-										
-									</div>
-
-								  Controls
-								  <a class="left item-control" href="#similar-product" data-slide="prev">
-									<i class="fa fa-angle-left"></i>
-								  </a>
-								  <a class="right item-control" href="#similar-product" data-slide="next">
-									<i class="fa fa-angle-right"></i>
-								  </a>
-							</div> -->
+							
 
 						</div>
 						<div class="col-sm-7">
@@ -155,13 +105,13 @@
 					<div class="category-tab shop-details-tab"><!--category-tab-->
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">
-								<li class=""><a href="#details" data-toggle="tab">Details</a></li>
-								<li class="active"><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
+								<li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+								<li class=""><a href="#reviews" data-toggle="tab">Reviews (${fn:length(revQnaList) })</a></li>
 								<!-- <li><a href="#qna" data-toggle="tab">Q&A (0)</a></li> -->
 							</ul>
 						</div>
 						<div class="tab-content">
-							<div class="tab-pane fade" id="details" >
+							<div class="tab-pane fade active in" id="details" >
 								<div class="col-sm-12">
 									<div class="product-image-wrapper">
 										<div class="single-products">
@@ -175,7 +125,7 @@
 								</div>
 							</div>
 							
-							<div class="tab-pane fade active in" id="reviews" >
+							<div class="tab-pane fade" id="reviews" >
 								<div class="col-sm-12">
 									<div id="reviewsDiv">
 										<c:forEach items="${revQnaList }" var="revQna">
@@ -257,58 +207,7 @@
 							
 							</div>
 							
-							 <!-- 
-							<div class="tab-pane fade" id="tag" >
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery1.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery2.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery3.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery4.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							 -->
+							
 						</div>
 					</div><!--/category-tab-->
 				</div>
@@ -376,16 +275,33 @@
 			type: "POST"
 			, dataType: "json"
 			, url: "/revQna/revAdd.do"
-			//, contentType: "application/json"
+			, contentType: "application/x-www-form-urlencoded; charset=UTF-8"
 			, data: formData
-			, success: revQnaAdded
-			, error: revQnaAddErr
+			, success: function(msg) {
+							$("#reviewsDiv").children().remove();
+					 		var reviewOne;
+					 		for(var i=0; i<msg.length; i++){
+					 			reviewOne = "<ul>"
+					 			+"<li><a href='#'><i class='fa fa-calendar-o'></i>"+msg[i].review_qna_subject+"</a></li>"
+					 			+"<li><a href='#'><i class='fa fa-user'></i>"+msg[i].review_qna_writer+"</a></li>"
+					 			+"<li><a href='#'><i class='fa fa-clock-o'></i>"+msg[i].review_qna_regdate+"</a></li>"
+								+"</ul>"
+								+"<p>"+msg[i].review_qna_content+"</p>"
+								+"<hr/>";
+								$("#reviewsDiv").append(reviewOne);
+					 		}
+					 		$(".input").val('');
+						}/*revQnaAdded*/
+			, error: function(xhr,status,error){
+						alert('error');
+				 		alert(xhr.status);
+				 		location.href = "/details.do?goods_idx="+${detailsGVO.goods_idx };
+					}
 		});
  	});
  	
  	// 게시글 입력 후 작업 // 목록 새로고침
- 	function revQnaAdded(msg){
- 		//alert(decodeURIComponent(msg[2].review_qna_subject));
+ 	/* function revQnaAdded(msg){
  		$("#reviewsDiv").children().remove();
  		var reviewOne;
  		for(var i=0; i<msg.length; i++){
@@ -396,7 +312,6 @@
 			+"</ul>"
 			+"<p>"+msg[i].review_qna_content+"</p>"
 			+"<hr/>";
-			//var temp = decodeURI(reviewOne);
 			$("#reviewsDiv").append(reviewOne);
  		}
  		$(".input").val('');
@@ -406,8 +321,6 @@
  		alert('error');
  		alert(xhr.status);
  		location.href = "/details.do?goods_idx="+${detailsGVO.goods_idx };
- 	};
- 	
- 	
+ 	}; */
     </script>
 </body>

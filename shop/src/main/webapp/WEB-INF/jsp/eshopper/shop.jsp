@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" 	   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui"     uri="http://egovframework.gov/ctl/ui"%>
-<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%-- <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%> --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -68,34 +68,13 @@
 						</div><!--/category-productsr-->
 					
 						<!-- 
-						<div class="brands_products">brands_products
-							<h2>Brands</h2>
-							<div class="brands-name">
-								<ul class="nav nav-pills nav-stacked">
-									<li><a href=""> <span class="pull-right">(50)</span>Acne</a></li>
-									<li><a href=""> <span class="pull-right">(56)</span>Grüne Erde</a></li>
-									<li><a href=""> <span class="pull-right">(27)</span>Albiro</a></li>
-									<li><a href=""> <span class="pull-right">(32)</span>Ronhill</a></li>
-									<li><a href=""> <span class="pull-right">(5)</span>Oddmolly</a></li>
-									<li><a href=""> <span class="pull-right">(9)</span>Boudestijn</a></li>
-									<li><a href=""> <span class="pull-right">(4)</span>Rösch creative culture</a></li>
-								</ul>
-							</div>
-						</div>/brands_products
-						 -->
-						
-						<div class="price-range"><!--price-range-->
+						<div class="price-range">price-range
 							<h2>Price Range</h2>
 							<div class="well">
 								 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2" ><br />
 								 <b>$ 0</b> <b class="pull-right">$ 600</b>
 							</div>
-						</div><!--/price-range-->
-						
-						<!-- 
-						<div class="shipping text-center">shipping
-							<img src="images/home/shipping.jpg" alt="" />
-						</div>/shipping
+						</div>/price-range
 						 -->
 						
 					</div>
@@ -115,36 +94,43 @@
 			                </select>
 		                </div>
 		                
-						<c:forEach var="goods" items="${goodsList }">
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products">
-										<div class="productinfo text-center">
-											<img src="${pageContext.request.contextPath}/upload/upimg/thumb/${goods.goods_thumb }" alt="" />
-											<h2>${goods.goods_price } 원</h2>
-											<h3>${goods.goods_name }</h3>
-											<p>${goods.goods_desc }</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-										</div>
-										<div class="product-overlay">
-											<div class="overlay-content">
-												<!-- <h1>상세보기</h1> -->
-												<h2>${goods.goods_price } 원</h2>
-												<p>${goods.goods_name }</p>
-												<a href="/details.do?goods_idx=${goods.goods_idx }" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>상세보기</a>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+		              <c:choose>
+		                	<c:when test="${empty goodsList}">
+		                		<h1 class="span12" align="center">등록된 상품이 없습니다.</h1>
+		                	</c:when>
+		                	<c:otherwise>
+		                		<c:forEach var="goods" items="${goodsList }">
+									<div class="col-sm-4">
+										<div class="product-image-wrapper">
+											<div class="single-products">
+													<div class="productinfo text-center">
+														<img src="${pageContext.request.contextPath}/upload/upimg/thumb/${goods.goods_thumb }" alt="" />
+														<h2>${goods.goods_price } 원</h2>
+														<h3>${goods.goods_name }</h3>
+														<p>${goods.goods_desc }</p>
+														<!-- <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a> -->
+													</div>
+													<div class="product-overlay">
+														<div class="overlay-content">
+															<h2>${goods.goods_price } 원</h2>
+															<p>${goods.goods_name }</p>
+															<a href="/details.do?goods_idx=${goods.goods_idx }" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>상세보기</a>
+															<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+														</div>
+													</div>
+											</div>
+											<div class="choose">
+												<ul class="nav nav-pills nav-justified">
+													<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+													<!-- <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li> -->
+												</ul>
 											</div>
 										</div>
-								</div>
-								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						</c:forEach>
+									</div>
+									</c:forEach>
+		                	</c:otherwise>
+		                </c:choose>
+						
 						
 						<!-- <ul class="pagination">
 							<li class="active"><a href="">1</a></li>
@@ -155,11 +141,14 @@
 						
 			        	
 					</div><!--features_items-->
-						<!-- /List -->
+					
+					<!-- /List -->
+					<c:if test="${not empty goodsList}">
 			        	<div id="paging">
 			        		<ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="linkPage" />
 			        		<%-- <form:hidden path="pageIndex" /> --%>
 			        	</div>
+					</c:if>
 				</div>
 			</div>
 		</div>

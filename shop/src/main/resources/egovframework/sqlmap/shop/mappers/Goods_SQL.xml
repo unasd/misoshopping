@@ -32,6 +32,9 @@
 			, #{is_size}
 			, #{size_option}
 		)
+		<selectKey keyProperty="goods_idx" resultType="Integer" order="AFTER">
+			SELECT goods_seq.currval FROM dual
+		</selectKey>
 	</insert>
 	
 	<!-- 카테고리별 상품조회 조건문 -->

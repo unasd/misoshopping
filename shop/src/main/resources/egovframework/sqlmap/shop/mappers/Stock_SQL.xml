@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shop.service.impl.StockMapper">
+
 	<insert id="insertStock" parameterType="StockVO">
 		insert into STOCK(
 			goods_idx
@@ -15,4 +16,11 @@
 		)
 	</insert>
 	
+	<select id="selectStockList" resultType="StockVO">
+		select G.GOODS_NAME, B.CATEGORY_B_NAME, S.GOODS_IDX, S.STOCK_COLOR, S.STOCK_SIZE, S.STOCK_AMOUNT
+		from GOODS G, STOCK S, CATEGORY_B B
+		where G.GOODS_IDX = S.GOODS_IDX
+		and G.CATEGORY_B_IDX = B.CATEGORY_B_IDX 
+		order by S.GOODS_IDX
+	</select>
 </mapper>

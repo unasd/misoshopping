@@ -20,7 +20,7 @@
 			<div class="row">
 				<div class="col-sm-10">
 					<table data-toggle="table"
-					       data-url="/revQna/revAdd.do?goods_idx=27"
+					       data-url="/stockListJson.do"
 					       data-query-params="queryParams"
 					       data-pagination="true"
 					       data-search="true"
@@ -29,12 +29,14 @@
 		    			   data-single-select="true">
 					    <thead>
 					    <tr>
-					   		<th data-field="state" data-checkbox="true"></th>
-					        <th data-field="goods_idx">상품번호</th>
-					        <th data-field="review_qna_writer">글쓴이</th>
-					        <th data-field="review_qna_content">내용</th>
-					        <th data-field="review_qna_regdate">등록일</th>
-					        <th data-field="action" data-formatter="actionFormatter" data-events="actionEvents">Action</th>
+					   		<!-- <th data-field="state" data-checkbox="true"></th> -->
+					        <th data-field="category_b_name" data-sortable="true">대분류</th>
+					        <th data-field="goods_idx" data-sortable="true">상품번호</th>
+					        <th data-field="goods_name" data-sortable="true">상품명</th>
+					        <th data-field="stock_color">색상</th>
+					        <th data-field="stock_size">사이즈</th>
+					        <th data-field="stock_amount">수량</th>
+					        <th data-field="action" data-formatter="actionFormatter" data-events="actionEvents">재고관리</th>
 					    </tr>
 					    </thead>
 					</table>
@@ -98,13 +100,10 @@
 	    }
 	};
 	
-	/* $(".bs-checkbox").on("click", function(){
-		alert($(this).siblings(:eq(0)).html());
-	}); */
+	//alert($("tbody").children().length);
 	
-	$("tr").on("click", function(){
-		alert("df");
-	});
+	//$(".table-hover").children("tr").index();
+	
 	</script>
 </body>
 </html>
