@@ -102,7 +102,12 @@
 		</dependency>
 		
 		<!-- mybatis -->
-		
+		<!-- <dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.2</version>
+		</dependency> -->
+				
         
         <!-- mysql이나 oracle 필요시 사용 -->
         <dependency>

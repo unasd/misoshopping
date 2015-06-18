@@ -2,13 +2,13 @@ package shop.service.impl;
 
 import java.util.List;
 
-import shop.service.CategoryBVO;
+import shop.service.CategoryVO;
 import shop.service.CategoryMVO;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
 
-@Mapper("categoryBMapper")
-public interface CategoryBMapper {
+@Mapper("categoryMapper")
+public interface CategoryMapper {
 	
 	/**
 	 * 대분류 카테고리 목록을 조회한다.
@@ -16,8 +16,8 @@ public interface CategoryBMapper {
 	 * @return
 	 * @exception
 	 */
-	public List<CategoryBVO> selectCategoryBList(CategoryBVO categoryBVO);
-	public void insertCategoryB(CategoryBVO categoryBVO);
+	public List<CategoryVO> selectCategoryBList(CategoryVO categoryVO);
+	public int insertCategory(CategoryVO categoryVO);
 	
 	public List<CategoryMVO> selectAllCategoryMlist(CategoryMVO categoryMVO);
 	public List<CategoryMVO> selectCategoryMList(CategoryMVO categoryMVO);

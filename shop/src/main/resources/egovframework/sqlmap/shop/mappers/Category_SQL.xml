@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.service.impl.CategoryMapper">
+
+	<select id="selectCategoryBList" parameterType="CategoryVO" resultType="CategoryVO">
+		<![CDATA[
+		SELECT category_idx, category_desc, upper_category_idx
+		FROM category 
+		WHERE upper_category_idx=#{upper_category_idx} 
+		ORDER BY category_idx
+		]]>
+	</select>
+	
+	<insert id="insertCategory" parameterType="CategoryVO">
+		<selectKey keyProperty="category_idx" resultType="int" order="BEFORE">
+			<![CDATA[SELECT category_seq.nextval AS category_idx FROM dual]]>
+		</selectKey>
+		<![CDATA[
+		INSERT INTO category(
+			category_idx
+			, category_name
+			, category_desc
+			, upper_category_idx
+		) VALUES (
+			#{category_idx}
+			, #{category_name}
+			, #{category_desc}
+			, #{upper_category_idx}
+		)
+		]]>
+	</insert>
+</mapper>

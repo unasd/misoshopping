@@ -26,8 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 import egovframework.example.sample.service.SampleDefaultVO;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import shop.StockService;
-import shop.service.CategoryBService;
-import shop.service.CategoryBVO;
+import shop.service.CategoryService;
+import shop.service.CategoryVO;
 import shop.service.CategoryMVO;
 import shop.service.GoodsService;
 import shop.service.GoodsVO;
@@ -40,8 +40,8 @@ public class GoodsController {
 	
 	@Resource(name="GoodsService")
 	private GoodsService goodsService;
-	@Resource(name="categoryBService")
-	private CategoryBService categoryBService;
+	@Resource(name="categoryService")
+	private CategoryService categoryService;
 	@Resource(name="RevQnaService")
 	private RevQnaService revQnaService;
 	@Resource(name="StockService")
@@ -68,11 +68,11 @@ public class GoodsController {
 		
 		ModelAndView mav = new ModelAndView();
 		List<GoodsVO> goodsList = goodsService.selectGoodsList(shopDefaultVO);
-		List<CategoryBVO> categoryBList = categoryBService.selectCategoryBList(new CategoryBVO());
-		List<CategoryMVO> categoryMList = categoryBService.selectAllCategoryMlist(new CategoryMVO());
+		//List<CategoryVO> categoryBList = categoryService.selectCategoryList(new CategoryVO());
+		//List<CategoryMVO> categoryMList = categoryService.selectAllCategoryMlist(new CategoryMVO());
 		
 		//categoryM을 분류별로 나눠 리스트에
-		for(int i=0; i<categoryBList.size(); i++){
+		/*for(int i=0; i<categoryBList.size(); i++){
 			int b_idx = categoryBList.get(i).getCategory_b_idx();
 			List<CategoryMVO> selectCateMList = new ArrayList<CategoryMVO>();
 			for(int j=0; j<categoryMList.size(); j++){
@@ -84,9 +84,9 @@ public class GoodsController {
 				}
 			}
 		} // categoryM 분류 끝
-		
+		*/
 		mav.addObject("goodsList", goodsList);
-		mav.addObject("categoryBList", categoryBList);
+		//mav.addObject("categoryBList", categoryBList);
 		mav.setViewName("eshopper/index");
 		return mav;
 	}
@@ -126,11 +126,11 @@ public class GoodsController {
 		// @확인용 System.out.println("totCnt : "+totCnt);
 		paginationInfo.setTotalRecordCount(totCnt);
 		
-		List<CategoryBVO> categoryBList = categoryBService.selectCategoryBList(new CategoryBVO());
-		List<CategoryMVO> categoryMList = categoryBService.selectAllCategoryMlist(new CategoryMVO());
+		//List<CategoryVO> categoryBList = categoryService.selectCategoryList(new CategoryVO());
+		//List<CategoryMVO> categoryMList = categoryService.selectAllCategoryMlist(new CategoryMVO());
 		
 		/**categoryM을 분류별로 나눠 리스트에*/
-		for(int i=0; i<categoryBList.size(); i++){
+		/*for(int i=0; i<categoryBList.size(); i++){
 			int b_idx = categoryBList.get(i).getCategory_b_idx();
 			List<CategoryMVO> selectCateMList = new ArrayList<CategoryMVO>();
 			for(int j=0; j<categoryMList.size(); j++){
@@ -142,11 +142,11 @@ public class GoodsController {
 				}
 			}
 		} // categoryM 분류 끝
-		
+		*/
 		mav.addObject("shopDefaultVO", shopDefaultVO);
 		mav.addObject("goodsList", goodsList);
 		mav.addObject("paginationInfo", paginationInfo);
-		mav.addObject("categoryBList", categoryBList);
+		//mav.addObject("categoryBList", categoryBList);
 		mav.setViewName("eshopper/shop");
 		return mav;
 	}
@@ -163,15 +163,15 @@ public class GoodsController {
 		//RevQnaVO revQnaVO = new RevQnaVO();
 		// revQnaVO.setGoods_idx(goodsVO.getGoods_idx());
 		
-		List<CategoryBVO> categoryBList = categoryBService.selectCategoryBList(new CategoryBVO());
-		List<CategoryMVO> categoryMList = categoryBService.selectAllCategoryMlist(new CategoryMVO());
+		//List<CategoryVO> categoryList = categoryService.selectCategoryList(new CategoryVO());
+		//List<CategoryMVO> categoryMList = categoryService.selectAllCategoryMlist(new CategoryMVO());
 		GoodsVO detailsGVO = goodsService.selectOneGoods(goodsVO);
 		// goods_idx값을 갖고 후기DB의 리스트를 불러옴  
 		List<RevQnaVO> revQnaList = revQnaService.selectRevQnaList(goodsVO.getGoods_idx());
 		// @확인용 System.out.println(revQnaList);
 		
 		/**categoryM을 분류별로 나눠 리스트에*/
-		for(int i=0; i<categoryBList.size(); i++){
+		/*for(int i=0; i<categoryBList.size(); i++){
 			int b_idx = categoryBList.get(i).getCategory_b_idx();
 			List<CategoryMVO> selectCateMList = new ArrayList<CategoryMVO>();
 			for(int j=0; j<categoryMList.size(); j++){
@@ -183,9 +183,9 @@ public class GoodsController {
 				}
 			}
 		} // categoryM 분류 끝
-		
+		*/
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("categoryBList", categoryBList);
+		//mav.addObject("categoryList", categoryList);
 		mav.addObject("detailsGVO", detailsGVO);
 		mav.addObject("revQnaList", revQnaList);
 		mav.setViewName("/eshopper/productDetails");
@@ -199,11 +199,11 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/goodsInfo.do")
-	public ModelAndView categoryBList(@ModelAttribute CategoryBVO categoryBVO){
-		List<CategoryBVO> categoryBList = categoryBService.selectCategoryBList(categoryBVO);
+	public ModelAndView categoryBList(@ModelAttribute CategoryVO categoryBVO){
+		//List<CategoryBVO> categoryBList = categoryBService.selectCategoryBList(categoryBVO);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("categoryBList", categoryBList);
+		//mav.addObject("categoryBList", categoryBList);
 		mav.setViewName("eshopper/admin/goodsInfo");
 		return mav;
 	}
