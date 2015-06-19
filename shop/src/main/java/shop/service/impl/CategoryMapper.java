@@ -4,6 +4,7 @@ import java.util.List;
 
 import shop.service.CategoryVO;
 import shop.service.CategoryMVO;
+import shop.service.ShopDefaultVO;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
 
@@ -11,15 +12,21 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 public interface CategoryMapper {
 	
 	/**
-	 * 대분류 카테고리 목록을 조회한다.
-	 * @param
+	 * 카테고리 관리페이지 리스트를 로딩한다.
+	 * @param shopDefaultVO
 	 * @return
-	 * @exception
+	 */
+	public List<CategoryVO> categoryList(ShopDefaultVO shopDefaultVO);
+	/**
+	 * 셀렉트박스 카테고리 목록을 로딩한다.
+	 * @param categoryVO
+	 * @return
 	 */
 	public List<CategoryVO> selectCategoryBList(CategoryVO categoryVO);
+	/**
+	 * 셀렉트박스 카테고리를 추가한다.
+	 * @param categoryVO
+	 * @return
+	 */
 	public int insertCategory(CategoryVO categoryVO);
-	
-	public List<CategoryMVO> selectAllCategoryMlist(CategoryMVO categoryMVO);
-	public List<CategoryMVO> selectCategoryMList(CategoryMVO categoryMVO);
-	public void insertCategoryM(CategoryMVO categoryMVO);
 }

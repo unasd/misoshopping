@@ -172,7 +172,7 @@
 	function categoryBList(){
 		$.ajax({
 			type: "POST"
-			, url: "/api/categoryList.do"
+			, url: "/api/selBoxCateList.do"
 			, success: function(data){
 				//$("#categoryB_add").attr("style", "display:none");
 				$("#categoryB").children().remove();
@@ -214,7 +214,7 @@
 	function cateGoryMLoad(cateGoryBVal){
 		$.ajax({
 			type: "POST"
-			, url: "/api/categoryList.do"
+			, url: "/api/selBoxCateList.do"
 			, data: "upper_category_idx="+cateGoryBVal
 			, success: function(data){
 				$("#categoryM").children().remove();
@@ -241,9 +241,11 @@
 			, url: "/api/category_add.do"
 			, data: "category_name="+category_name+"&category_desc="+category_desc+"&upper_category_idx="+upper_category_idx
 			, success: function(data){
-				alert(data+"항목이 추가되었습니다.");
+				console.log("카테고리추가성공, category_idx : "+data);
+				alert("항목이 추가되었습니다.");
 				categoryBList();
 				$button.parent().attr("style", "display:none");
+				$button.siblings('input:text').val('');
 				$("#categoryM").children().eq(0).attr("selected", "selected");
 			}
 			, error: function(xhr, status, error){

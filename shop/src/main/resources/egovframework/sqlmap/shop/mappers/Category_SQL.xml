@@ -2,11 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shop.service.impl.CategoryMapper">
 
+	<select id="categoryList" parameterType="ShopDefaultVO" resultType="CategoryVO">
+		<![CDATA[
+		SELECT category_idx, nvl(upper_category_name, category_name) AS category_name,
+				decode(upper_category_name, null, '-', category_name) AS upper_category_name,
+				category_regdate, category_register, nvl(category_deldate, '-') AS category_deldate 
+		FROM category 
+		WHERE 1=1
+		]]>
+		<if test="b_idx != 0">
+		AND category_idx = #{b_idx}
+		OR upper_category_idx = #{b_idx}
+		</if>
+		<if test="b_idx == 0">
+		AND upper_category_idx= 0
+		</if>
+		<![CDATA[
+		ORDER BY upper_category_idx
+		]]>
+	</select>
+	
 	<select id="selectCategoryBList" parameterType="CategoryVO" resultType="CategoryVO">
 		<![CDATA[
-		SELECT category_idx, category_desc, upper_category_idx
+		SELECT category_idx, category_name, upper_category_idx
 		FROM category 
 		WHERE upper_category_idx=#{upper_category_idx} 
+		AND category_deldate IS NULL
 		ORDER BY category_idx
 		]]>
 	</select>
@@ -21,11 +42,25 @@
 			, category_name
 			, category_desc
 			, upper_category_idx
+		]]>
+			<if test="upper_category_idx>0">
+		<![CDATA[, upper_category_name]]>
+			</if>
+		<![CDATA[
+			, category_regdate
+			, category_register
 		) VALUES (
 			#{category_idx}
 			, #{category_name}
 			, #{category_desc}
 			, #{upper_category_idx}
+		]]>
+			<if test="upper_category_idx>0">
+		<![CDATA[, (SELECT category_name FROM category WHERE category_idx=#{upper_category_idx})]]>
+			</if>
+		<![CDATA[
+			, to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS')
+			, #{category_register}
 		)
 		]]>
 	</insert>

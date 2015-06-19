@@ -99,6 +99,7 @@
                                 </li> 
 								<li class="dropdown"><a href="#">Admin<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
+                                        <li><a href="/categoryList.do">Category Management</a></li>
                                         <li><a href="/goodsInfo.do">Product Management</a></li>
 										<li><a href="/stockList.do">Stock Management</a></li>
                                     </ul>

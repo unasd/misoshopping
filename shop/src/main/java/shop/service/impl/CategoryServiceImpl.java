@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import shop.service.CategoryService;
 import shop.service.CategoryVO;
 import shop.service.CategoryMVO;
+import shop.service.ShopDefaultVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 @Service("categoryService")
@@ -20,6 +21,14 @@ public class CategoryServiceImpl extends EgovAbstractServiceImpl implements Cate
 	
 	@Resource(name="categoryMapper")
 	private CategoryMapper categoryDAO;
+
+	
+	@Override
+	public List<CategoryVO> categoryList(ShopDefaultVO shopDefaultVO) {
+		// TODO Auto-generated method stub
+		LOGGER.debug(shopDefaultVO.toString());
+		return categoryDAO.categoryList(shopDefaultVO);
+	}
 	
 	@Override
 	public StringBuffer selectCategoryBList(CategoryVO categoryVO) {
@@ -42,9 +51,8 @@ public class CategoryServiceImpl extends EgovAbstractServiceImpl implements Cate
 		StringBuffer categoryString = new StringBuffer();
 		
 		for(CategoryVO categoryVO : categoryVOList){
-			categoryString.append("<option value='"+categoryVO.getCategory_idx()+"'>"+categoryVO.getCategory_desc()+"</option>");
-		}
-		
+			categoryString.append("<option value='"+categoryVO.getCategory_idx()+"'>"+categoryVO.getCategory_name()+"</option>");
+		}																		
 		return categoryString;
 	}
 }
