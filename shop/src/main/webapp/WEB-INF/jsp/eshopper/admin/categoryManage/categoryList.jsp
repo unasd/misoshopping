@@ -42,7 +42,8 @@
 						<td>${category.category_regdate }</td>					
 						<td>${category.category_register }</td>					
 						<td>${category.category_deldate }</td>				
-						<td><a href="">편집</a></td>				
+						<td><a href="#" class="cateUpdate" idx="${category.category_idx }">편집</a> 
+						/ <a href="#" class="cateDelete" idx="${category.category_idx }">삭제</a></td>				
 					</tr>
 					</c:forEach>
 				</tbody>
@@ -67,6 +68,9 @@
 <script>
 $(document).ready(function(){
 	categoryBList();
+	
+	var cateUpdateResult = "${cateUpdateResult}";
+	var cateDelResult  = "${cateDelResult}";
 });
 
 //var categoryBString;
@@ -77,7 +81,7 @@ function categoryBList(){
 		, url: "/api/selBoxCateList.do"
 		, success: function(data){
 			$("#categoryB").children().remove();
-			$("<option value='x'>대분류</option>"+data+"<option value='all'>전체</option>").appendTo($("#categoryB"));
+			$("<option value=''>대분류</option>"+data+"<option value='x'>대분류만</option>"+"<option value='all'>전체</option>").appendTo($("#categoryB"));
 			//categoryBString = data;
 		}
 		, error: function(xhr, error, status){
@@ -91,7 +95,7 @@ var categoryBVal;
 $("#categoryB").on("change", function(){
 	categoryBVal = $(this).val();
 	if(categoryBVal == 'x'){
-		//location.href="/categoryList.do?b_idx=121212";
+		location.href="/categoryList.do?b_idx=-1";
 	} else if(categoryBVal == 'all'){
 		location.href="/categoryList.do";
 	} else {
@@ -105,14 +109,40 @@ $("#add_category").on("click", function(){
 	modalPopup();
 });
 
+// 새로등록 모달
 function modalPopup(){ 
     var objectName = new Object(); // object 선언 modal의 이름이 된다. 
     //objectName.message = "이건 테스트"; // modal에 넘겨줄 값을 선언할 수 있다. 
     var site = "/categoryWrite.do"; 
-    var style ="dialogWidth:100px;dialogHeight:200px"; // 사이즈등 style을 선언 
-    window.showModalDialog(site, objectName ,style ); // modal 실행 window.showModalDialog 포인트!! 
+    //var style ="dialogWidth:100px;dialogHeight:200px"; // 사이즈등 style을 선언 
+    window.open(site, "", "width=200, height=200"); // modal 실행 window.showModalDialog 포인트!! 
     // modal 에 넘겨줬던 값을 다시 부모창에 받아 들임     
     //document.getElementById("test1").value = objectName.message; 
 }
+
+$(".cateUpdate").on("click", function(){
+	var cateIdx = $(this).attr("idx");
+	location.href="/categoryUpdate.do?category_idx="+cateIdx;
+});
+
+$(".cateDelete").on("click", function(){
+	var result;
+	var cateIdx = $(this).attr("idx");
+	
+	if($(this).parent().siblings("td").eq(2).text() == '-'){
+		result = confirm($(this).parent().siblings("td").eq(1).text()+" 분류를 삭제하시겠습니까? \n하위분류도 함께 삭제됩니다.");
+	} else {
+		result = confirm($(this).parent().siblings("td").eq(2).text()+" 분류를 삭제하시겠습니까?");
+	}
+	//alert(result+" / "+cateIdx);
+	
+	if(result){
+		location.href="/categoryDelete.do?category_idx="+cateIdx;
+	} else {
+		return false;
+	}
+});
+
+
 </script>
 </body>

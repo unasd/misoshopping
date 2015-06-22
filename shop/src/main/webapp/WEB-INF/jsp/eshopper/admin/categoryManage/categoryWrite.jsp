@@ -12,7 +12,7 @@
 		<div class="row">
 			<div class="btn-group" align="center">
 	            <label class="btn btn-default">
-	                <input type="radio" id="cateB" name="category" value="1" /> 대분류
+	                <input type="radio" id="cateB" name="category" value="1" checked="checked" /> 대분류
 	            </label> 
 	            <label class="btn btn-default">
 	                <input type="radio" id="cateM" name="category" value="2" /> 중분류
@@ -66,15 +66,16 @@ $("#add_category").on("click", function(){
 		, success: function(data){
 			console.log("카테고리추가성공, category_idx : "+data);
 			alert("항목이 추가되었습니다.");
+			opener.window.location.reload();
+			window.close();
 		}
 		, error: function(xhr, status, error){
 			alert("error : "+xhr.status);
-			//location.href="/categoryList.do";
+			window.close();
 		}
 	});
 	
 	//opener.location.href="/categoryList.do";
-	window.close();
 });
 
 function categoryBList(){

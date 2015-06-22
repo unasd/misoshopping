@@ -3,20 +3,18 @@ package shop.service;
 import org.springframework.web.multipart.MultipartFile;
 
 public class GoodsVO {
+	private int goods_idx;
 	private String goods_name;
 	private String goods_desc;
 	private int goods_price;
 	private MultipartFile goods_file;
 	private String goods_img;
 	private String goods_thumb;
-	private int goods_idx;
+	private int category_idx;
+	private String goods_color;
+	private String goods_size;
 	private String goods_regdate;
-	private int category_b_idx;
-	private int category_m_idx;
-	private String is_color="n";
-	private String color_option="n";
-	private String is_size="n";
-	private String size_option="n";
+	private String goods_register;
 	
 	
 	public String getGoods_name() {
@@ -61,17 +59,11 @@ public class GoodsVO {
 	public void setGoods_regdate(String goods_regdate) {
 		this.goods_regdate = goods_regdate;
 	}
-	public int getCategory_b_idx() {
-		return category_b_idx;
+	public int getCategory_idx() {
+		return category_idx;
 	}
-	public void setCategory_b_idx(int category_b_idx) {
-		this.category_b_idx = category_b_idx;
-	}
-	public int getCategory_m_idx() {
-		return category_m_idx;
-	}
-	public void setCategory_m_idx(int category_m_idx) {
-		this.category_m_idx = category_m_idx;
+	public void setCategory_idx(int category_idx) {
+		this.category_idx = category_idx;
 	}
 	public MultipartFile getGoods_file() {
 		return goods_file;
@@ -79,29 +71,22 @@ public class GoodsVO {
 	public void setGoods_file(MultipartFile goods_file) {
 		this.goods_file = goods_file;
 	}
-	public String getIs_color() {
-		return is_color;
+	public String getGoods_color() {
+		return goods_color;
 	}
-	public void setIs_color(String is_color) {
-		this.is_color = is_color;
+	public void setGoods_color(String goods_color) {
+		this.goods_color = goods_color;
 	}
-	public String getColor_option() {
-		return color_option;
+	public String getGoods_size() {
+		return goods_size;
 	}
-	public void setColor_option(String color_option) {
-		this.color_option = color_option;
+	public void setGoods_size(String goods_size) {
+		this.goods_size = goods_size;
 	}
-	public String getIs_size() {
-		return is_size;
+	public String getGoods_register() {
+		return goods_register;
 	}
-	public void setIs_size(String is_size) {
-		this.is_size = is_size;
+	public void setGoods_register(String goods_register) {
+		this.goods_register = goods_register;
 	}
-	public String getSize_option() {
-		return size_option;
-	}
-	public void setSize_option(String size_option) {
-		this.size_option = size_option;
-	}
-	
 }

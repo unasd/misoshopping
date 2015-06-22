@@ -10,17 +10,64 @@
 		FROM category 
 		WHERE 1=1
 		]]>
-		<if test="b_idx != 0">
-		AND category_idx = #{b_idx}
-		OR upper_category_idx = #{b_idx}
-		</if>
-		<if test="b_idx == 0">
-		AND upper_category_idx= 0
-		</if>
+		<choose>
+			<when test="b_idx == -1">
+				<![CDATA[
+				AND upper_category_idx= 0]]>
+			</when>
+			<when test="b_idx == 0">
+			
+			</when>
+			<otherwise>
+				<![CDATA[
+				AND category_idx = #{b_idx}
+				OR upper_category_idx = #{b_idx}]]>
+			</otherwise>
+		</choose>
 		<![CDATA[
-		ORDER BY upper_category_idx
+		ORDER BY category_deldate, upper_category_idx
 		]]>
 	</select>
+	
+	<select id="categoryUpdate1" parameterType="CategoryVO" resultType="CategoryVO">
+		<![CDATA[
+		SELECT category_idx, category_name, category_desc, category_regdate, category_register,
+				NVL(category_update, '-') AS category_update, NVL(category_updater, '-') AS category_updater,
+				NVL(category_deldate, '-') AS category_deldate, NVL(category_deleter, '-') AS category_deleter,
+				DECODE(upper_category_name, null, '-', category_name) AS upper_category_name
+		FROM category
+		WHERE category_idx = #{category_idx}
+				
+		]]>
+	</select>
+	
+	<update id="categoryUpdate2" parameterType="CategoryVO">
+		<![CDATA[
+		UPDATE category 
+		SET category_name = #{category_name}
+			, category_desc = #{category_desc}
+			, category_update = to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS')
+			, category_updater = #{category_updater}
+			, upper_category_idx = #{upper_category_idx}
+		]]>
+			<if test="upper_category_idx != 0">
+			<![CDATA[
+			, upper_category_name = (SELECT category_name FROM category WHERE category_idx=#{upper_category_idx})
+			]]>
+			</if>
+		<![CDATA[
+		WHERE category_idx= #{category_idx}
+		]]>
+	</update>
+	
+	<update id="categoryDelete" parameterType="CategoryVO">
+		<![CDATA[
+		UPDATE category
+		SET category_deldate = to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS')
+			, category_deleter = #{category_deleter}
+		WHERE category_idx= #{category_idx}
+		]]>	
+	</update>
 	
 	<select id="selectCategoryBList" parameterType="CategoryVO" resultType="CategoryVO">
 		<![CDATA[
@@ -28,6 +75,7 @@
 		FROM category 
 		WHERE upper_category_idx=#{upper_category_idx} 
 		AND category_deldate IS NULL
+		AND (SELECT category_deldate FROM category WHERE category_idx = #{upper_category_idx}) IS NULL
 		ORDER BY category_idx
 		]]>
 	</select>

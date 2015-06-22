@@ -32,6 +32,11 @@ public class CategoryController {
 	@Resource(name="categoryService")
 	private CategoryService categoryService;
 	
+	/**
+	 * 카테고리 관리페이지의 카테고리 리스트를 불러온다.
+	 * @param shopDefaultVO
+	 * @return
+	 */
 	@RequestMapping("/categoryList.do")
 	public ModelAndView categoryList(ShopDefaultVO shopDefaultVO){
 		ModelAndView mav = new ModelAndView();
@@ -47,11 +52,56 @@ public class CategoryController {
 	public ModelAndView categoryWrite(){
 		ModelAndView mav = new ModelAndView();
 		
-		
 		mav.setViewName("/eshopper/admin/categoryManage/categoryWrite");
 		return mav;
 	}
 	
+	@RequestMapping(value="/categoryUpdate.do", method=RequestMethod.GET)
+	public ModelAndView categoryUpdate1(CategoryVO categoryVO){
+		ModelAndView mav = new ModelAndView();
+		CategoryVO categoryUpdate1 = categoryService.categoryUpdate1(categoryVO);
+		
+		mav.addObject("categoryUpdate1", categoryUpdate1);
+		mav.setViewName("/eshopper/admin/categoryManage/categoryUpdate");
+		return mav;
+	}
+	
+	@RequestMapping(value="/categoryUpdate.do", method=RequestMethod.POST)
+	public ModelAndView categoryUpdate2(CategoryVO categoryVO){
+		int cateUpdateResult =0;
+		ModelAndView mav = new ModelAndView();
+		ShopDefaultVO shopDefaultVO = new ShopDefaultVO();
+		shopDefaultVO.setB_idx(categoryVO.getUpper_category_idx());
+		
+		// 현재 로그인한 관리자의 세션에서 아이디를 얻어와 셋팅한다
+		categoryVO.setCategory_updater("admin");
+		cateUpdateResult = categoryService.categoryUpdate2(categoryVO);
+		
+		//List<CategoryVO> categoryVOs = categoryService.categoryList(shopDefaultVO);
+		
+		mav.addObject("shopDefaultVO", shopDefaultVO);
+		//mav.addObject("categoryVOs", categoryVOs);
+		mav.addObject("cateUpdateResult", cateUpdateResult);
+		mav.setViewName("/eshopper/admin/categoryManage/categoryUpdate");
+		return mav;			
+	}
+	
+	@RequestMapping(value="/categoryDelete.do")
+	public ModelAndView categoryDelete(CategoryVO categoryVO){
+		ModelAndView mav = new ModelAndView();
+		ShopDefaultVO shopDefaultVO = new ShopDefaultVO();
+		shopDefaultVO.setB_idx(categoryVO.getUpper_category_idx());
+		categoryVO.setCategory_deleter("admin");
+		
+		List<CategoryVO> categoryVOs = categoryService.categoryList(shopDefaultVO);
+		int cateDelResult = categoryService.categoryDelete(categoryVO);
+		
+		mav.addObject("shopDefaultVO", shopDefaultVO);
+		mav.addObject("categoryVOs", categoryVOs);
+		mav.addObject("cateDelResult", cateDelResult);
+		mav.setViewName("/eshopper/admin/categoryManage/categoryList");
+		return mav;
+	}
 	/**
 	 * 셀렉트박스의 카테고리 목록을 불러온다.
 	 * @param categoryVO
@@ -79,6 +129,7 @@ public class CategoryController {
 		categoryVO.setCategory_register("admin");
 		int isInsert = categoryService.insertCategory(categoryVO);
 		PrintWriter out = resp.getWriter();
-		out.print(categoryVO.getCategory_idx());
+		out.print(isInsert);
+		System.out.println("isInsert : "+isInsert);
 	}
 }

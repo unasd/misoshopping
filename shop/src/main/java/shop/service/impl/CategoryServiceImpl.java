@@ -55,4 +55,23 @@ public class CategoryServiceImpl extends EgovAbstractServiceImpl implements Cate
 		}																		
 		return categoryString;
 	}
+
+	@Override
+	public CategoryVO categoryUpdate1(CategoryVO categoryVO) {
+		// TODO Auto-generated method stub
+		LOGGER.debug(categoryVO.toString());
+		return categoryDAO.categoryUpdate1(categoryVO);
+	}
+
+	@Override
+	public int categoryUpdate2(CategoryVO categoryVO) {
+		LOGGER.debug(categoryVO.toString());
+		return categoryDAO.categoryUpdate2(categoryVO);
+	}
+
+	@Override
+	public int categoryDelete(CategoryVO categoryVO) {
+		LOGGER.debug(categoryVO.toString());
+		return categoryDAO.categoryDelete(categoryVO);
+	}
 }

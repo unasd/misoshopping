@@ -3,38 +3,36 @@
 <mapper namespace="shop.service.impl.GoodsMapper">
 	
 	<insert id="insertGoods" parameterType="GoodsVO">
+		<selectKey keyProperty="goods_idx" resultType="Integer" order="BEFORE">
+			<![CDATA[SELECT goods_seq.nextval AS goods_idx FROM dual]]>
+		</selectKey>
+		<![CDATA[
 		INSERT INTO GOODS(
-			goods_name
+			goods_idx
+			, goods_name
 			, goods_desc
 			, goods_price
 			, goods_img
 			, goods_thumb
-			, goods_idx
+			, category_idx
+			, goods_color
+			, goods_size
 			, goods_regdate
-			, category_b_idx
-			, category_m_idx
-			, is_color
-			, color_option
-			, is_size
-			, size_option
+			, goods_register
 		) VALUES (
-			#{goods_name}
+			goods_seq.nextval
+			, #{goods_name}
 			, #{goods_desc}
 			, #{goods_price}
 			, #{goods_img}
 			, #{goods_thumb}
-			, goods_seq.nextval
+			, #{category_idx}
+			, #{goods_color}
+			, #{goods_size}
 			, to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS')
-			, #{category_b_idx}
-			, #{category_m_idx}
-			, #{is_color}
-			, #{color_option}
-			, #{is_size}
-			, #{size_option}
+			, #{goods_register}
 		)
-		<selectKey keyProperty="goods_idx" resultType="Integer" order="AFTER">
-			SELECT goods_seq.currval FROM dual
-		</selectKey>
+		]]>
 	</insert>
 	
 	<!-- 카테고리별 상품조회 조건문 -->

@@ -63,8 +63,7 @@ public class GoodsController {
 		shopDefaultVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		shopDefaultVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		shopDefaultVO.setRecordCountPerPage(paginationInfo.getPageSize());
-		shopDefaultVO.setB_idx(goodsVO.getCategory_b_idx());
-		shopDefaultVO.setM_idx(goodsVO.getCategory_m_idx());
+		shopDefaultVO.setM_idx(goodsVO.getCategory_idx());
 		
 		ModelAndView mav = new ModelAndView();
 		List<GoodsVO> goodsList = goodsService.selectGoodsList(shopDefaultVO);
@@ -110,8 +109,7 @@ public class GoodsController {
 		shopDefaultVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		shopDefaultVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		shopDefaultVO.setRecordCountPerPage(paginationInfo.getPageSize());
-		shopDefaultVO.setB_idx(goodsVO.getCategory_b_idx());
-		shopDefaultVO.setM_idx(goodsVO.getCategory_m_idx());
+		shopDefaultVO.setM_idx(goodsVO.getCategory_idx());
 		
 		// @확인용 System.out.println(goodsVO.getCategory_b_idx());
 		// @확인용 System.out.println(goodsVO.getCategory_m_idx());
@@ -223,31 +221,7 @@ public class GoodsController {
 		MultipartFile goods_file = goodsVO.getGoods_file();
 		String originFileName = goods_file.getOriginalFilename();
 		String genId = UUID.randomUUID().toString();
-		String toStockColor[] = null, toStockSize[] = null;
-		
-		/** 색상옵션 셋팅 */
-		if(goodsVO.getIs_color().equals("y")){
-			String resultOption="";
-			int colorCount = Integer.parseInt(req.getParameter("color_option"));
-			toStockColor = new String[colorCount];
-			for(int i=0; i<colorCount; i++){
-				resultOption = resultOption+req.getParameter("color_option"+i)+"/";
-				toStockColor[i] = req.getParameter("color_option"+i);
-			}
-			goodsVO.setColor_option(resultOption);
-		}
-		
-		/** 사이즈옵션 셋팅 */
-		if(goodsVO.getIs_size().equals("y")){
-			String resultOption="";
-			int sizeCount = Integer.parseInt(req.getParameter("size_option"));
-			toStockSize = new String[sizeCount];
-			for(int i=0; i<sizeCount; i++){
-				resultOption = resultOption+req.getParameter("size_option"+i)+"/";
-				toStockSize[i] = req.getParameter("size_option"+i);
-			}
-			goodsVO.setSize_option(resultOption);
-		}
+		goodsVO.setGoods_register("admin");
 		
 		// 업로드된 파일이 이미지 파일이라면 
 		if(goods_file.getContentType().contains("image")){
@@ -263,9 +237,7 @@ public class GoodsController {
 			
 			// 셋팅된 goodsVO insert
 			goodsService.insertGoods(goodsVO);
-			
-			// 입력받은 재고정보 insert
-			stockService.insertStockInfos(goodsVO.getGoods_idx(), toStockColor, toStockSize);
+			System.out.println("goods_seq.nextval : "+goodsVO.getGoods_idx());
 			
 			// 입력완료 메시지
 			success = "y";

@@ -45,7 +45,7 @@
 							
 							<!-- <div class="col-sm-2"> -->
 								<label for="categoryM" class="col-sm-2 control-label">분류선택 </label>
-								<select id="categoryM" name="category_m_idx" class="form-control" style="width:164px;">
+								<select id="categoryM" name="category_idx" class="form-control" style="width:164px;">
 			                        <option value="x">중분류</option>
 			                        <option value="categoryM_add">+항목추가</option>
 			                    </select>
@@ -88,29 +88,16 @@
 						    </div>
 						    <hr/>
 						    <div class="form-group">
-						    	<label for="is_color" class="col-sm-3 control-label">색상옵션 유무</label>
-						    	<input type="checkbox" id="is_color" name="is_color" value="y" class="form-control option" style="width: 14px; height: 14px;"><br/>
-						    	<div class="addOption" style="display: none;">
-						    		<!-- <label for="is_color" class="col-sm-3 control-label">옵션1</label> -->
-						    		<input type="text" name="color_option0"  class="form-control" style="width: 100px" placeholder="옵션1"/>
-						    		<input type="text" name="color_option1"  class="form-control" style="width: 100px" placeholder="옵션2" />
-						    		<input type="text" name="color_option2"  class="form-control" style="width: 100px" placeholder="옵션3" />
-						    		<input type="hidden" name="color_option" value="3"/>
+						    	<label for="goods_color" class="col-sm-3 control-label">색상옵션</label>
+						    	<div class="addOption">
+						    		<input type="text" name=goods_color  class="form-control" style="width: 100px" placeholder="색상"/>
 						    	</div>
-						    	<input type="button" class="addOption btn btn-info addOptionBtn" value="옵션행 추가" style="display: none;"/>
-						    	<input type="button" class="addOption btn btn-danger removeOptionBtn" value="옵션행 삭제" style="display: none;"/>
 						    </div>
 						    <div class="form-group">
-						    	<label for="is_size" class="col-sm-3 control-label">사이즈옵션 유무</label>
-						    	<input type="checkbox" name="is_size" value="y" class="form-control option" style="width: 14px; height: 14px;"><br/>
-						    	<div class="addOption" style="display: none;">
-						    		<input type="text" name="size_option0" class="form-control" style="width: 100px" placeholder="옵션1" />
-						    		<input type="text" name="size_option1" class="form-control" style="width: 100px" placeholder="옵션2" />
-						    		<input type="text" name="size_option2" class="form-control" style="width: 100px" placeholder="옵션3" />
-						    		<input type="hidden" name="size_option" value="3"/>
+						    	<label for="goods_size" class="col-sm-3 control-label">사이즈옵션</label>
+						    	<div class="addOption">
+						    		<input type="text" name="goods_size" class="form-control" style="width: 100px" placeholder="사이즈" />
 						    	</div>
-						    	<input type="button" class="addOption btn btn-info addOptionBtn" value="옵션행 추가" style="display: none;"/>
-						    	<input type="button" class="addOption btn btn-danger removeOptionBtn" value="옵션행 삭제" style="display: none;"/>
 						    </div>
 						    <div class="form-group">
 						        <label for="goods_img" class="col-sm-4 control-label"></label>
@@ -268,7 +255,7 @@
 				required: true
 				, valueNotEquals: "x"
 			},
-			category_m_idx:{
+			category_idx:{
 				required: true
 				, valueNotEquals: "x"
 			},
@@ -324,10 +311,10 @@
 	var message = '${success}'; 
 	if(message == 'y'){
  		alert('입력완료'); 
- 		location.href = "/goodsInfo.do";
+ 		//location.href = "/goodsInfo.do";
 	} else if (message == 'n'){
 		alert('입력오류');
- 		location.href = "/goodsInfo.do";
+ 		//location.href = "/goodsInfo.do";
 	}
 	
 	// 옵션추가 체크박스
@@ -359,44 +346,6 @@
 
 		
 	});
-	
-	// 옵션행추가 이벤트
-	$(".addOptionBtn").on("click", function(){
-		var $copiedRow = $(this).siblings("div").children("input:text:last").clone(true);   // 마지막 옵션 복사
-		var $hidden = $(this).siblings("div").children("input:hidden");						// 옵션의 개수를 넘길 hidden input
-		var lastIndex = $(this).siblings("div").children("input:text").length;				// 추가 전 옵션 개수 
-		
-		$copiedRow.attr("placeholder", "옵션"+(lastIndex+1));							// 
-		$copiedRow.attr("name", $hidden.attr("name")+lastIndex);
-		$copiedRow.val('');
-		$(this).siblings("div").append($copiedRow);
-		$hidden.val($(this).siblings("div").children("input:text").length);
-		
-		var is_option = $(this).siblings("input:checkbox").attr("name");
-		var optionName = $(this).siblings("div").children("input:text:last").attr("name");
-		$("[name='"+optionName+"']").rules("add", {required: "#"+is_option+":checked"});		// 새로운 옵션행에 유효성검증
-	}); // 옵션행추가 끝
-	
-	
-	// 옵션행삭제 이벤트
-	$(".removeOptionBtn").on("click", function(){
-		var lastIndex = $(this).siblings("div").children("input:text").length;
-		if(lastIndex>2){
-			$(this).siblings("div").children("input:text:last").remove();		// 마지막 옵션 삭제
-			$(this).siblings("div").children("label:last").remove();			// 유효성 에러라벨 삭제
-			var $hidden = $(this).siblings("div").children("input:hidden");			// 옵션의 개수를 넘길 hidden input
-			
-			$hidden.val($(this).siblings("div").children("input:text").length); // 삭제 후 옵션 개수를 입력
-			
-			var is_option = $(this).siblings("input:checkbox").attr("name");
-			var optionName = $(this).siblings("div").children("input:text:last").attr("name");
-			//$("[name='"+optionName+"']").rules("remove", {required: "#"+is_option+":checked"});
-			$("[name='"+optionName+"']").rules("remove", {required: "#is_color:checked"});
-			
-		} else {
-			alert("더 이상 삭제할 수 없습니다.");
-		}
-	}); // 옵션행삭제 끝
 	</script>
 </body>
 </html>
