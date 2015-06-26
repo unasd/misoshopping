@@ -37,7 +37,6 @@
 				DECODE(upper_category_name, null, '-', category_name) AS upper_category_name
 		FROM category
 		WHERE category_idx = #{category_idx}
-				
 		]]>
 	</select>
 	
@@ -77,6 +76,12 @@
 		AND category_deldate IS NULL
 		AND (SELECT category_deldate FROM category WHERE category_idx = #{upper_category_idx}) IS NULL
 		ORDER BY category_idx
+		]]>
+	</select>
+	
+	<select id="cateNameCheck" parameterType="CategoryVO" resultType="CategoryVO">
+		<![CDATA[
+		SELECT category_name FROM category WHERE category_name = #{category_name}
 		]]>
 	</select>
 	

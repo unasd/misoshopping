@@ -59,17 +59,23 @@ public class CategoryController {
 	@RequestMapping(value="/categoryUpdate.do", method=RequestMethod.GET)
 	public ModelAndView categoryUpdate1(CategoryVO categoryVO){
 		ModelAndView mav = new ModelAndView();
+		ShopDefaultVO shopDefaultVO = new ShopDefaultVO();
+		shopDefaultVO.setB_idx(categoryVO.getUpper_category_idx());
+		int cateUpdateResult = 0;
+		
 		CategoryVO categoryUpdate1 = categoryService.categoryUpdate1(categoryVO);
 		
 		mav.addObject("categoryUpdate1", categoryUpdate1);
+		mav.addObject("cateUpdateResult", cateUpdateResult);
+		mav.addObject("shopDefaultVO", shopDefaultVO);
 		mav.setViewName("/eshopper/admin/categoryManage/categoryUpdate");
 		return mav;
 	}
 	
 	@RequestMapping(value="/categoryUpdate.do", method=RequestMethod.POST)
 	public ModelAndView categoryUpdate2(CategoryVO categoryVO){
-		int cateUpdateResult =0;
 		ModelAndView mav = new ModelAndView();
+		int cateUpdateResult = 0;
 		ShopDefaultVO shopDefaultVO = new ShopDefaultVO();
 		shopDefaultVO.setB_idx(categoryVO.getUpper_category_idx());
 		
@@ -77,10 +83,7 @@ public class CategoryController {
 		categoryVO.setCategory_updater("admin");
 		cateUpdateResult = categoryService.categoryUpdate2(categoryVO);
 		
-		//List<CategoryVO> categoryVOs = categoryService.categoryList(shopDefaultVO);
-		
 		mav.addObject("shopDefaultVO", shopDefaultVO);
-		//mav.addObject("categoryVOs", categoryVOs);
 		mav.addObject("cateUpdateResult", cateUpdateResult);
 		mav.setViewName("/eshopper/admin/categoryManage/categoryUpdate");
 		return mav;			
@@ -124,12 +127,17 @@ public class CategoryController {
 	 */
 	@RequestMapping("/api/category_add.do")
 	public void CategoryBInsert(CategoryVO categoryVO, HttpServletResponse resp) throws IOException{
-		//System.out.println("controller called");
+		System.out.println("controller called");
 		// 현재 로그인한 관리자의 세션에서 아이디를 얻어와 셋팅한다
 		categoryVO.setCategory_register("admin");
 		int isInsert = categoryService.insertCategory(categoryVO);
 		PrintWriter out = resp.getWriter();
 		out.print(isInsert);
 		System.out.println("isInsert : "+isInsert);
+	}
+	
+	@RequestMapping("api/cate_name_check.do")
+	public void cateNameCheck(CategoryVO categoryVO){
+		
 	}
 }

@@ -10,4 +10,5 @@ public interface CategoryService {
 	//public int categoryUpdate2(CategoryVO categoryVO);
 	public int categoryUpdate2(CategoryVO categoryVO);
 	public int categoryDelete(CategoryVO categoryVO);
+	public boolean cateNameCheck(CategoryVO categoryVO);
 }

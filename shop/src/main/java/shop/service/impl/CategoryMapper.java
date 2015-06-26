@@ -37,4 +37,6 @@ public interface CategoryMapper {
 	public int categoryUpdate2(CategoryVO categoryVO);
 	
 	public int categoryDelete(CategoryVO categoryVO);
+	
+	public CategoryVO cateNameCheck(CategoryVO categoryVO);
 }

@@ -74,4 +74,11 @@ public class CategoryServiceImpl extends EgovAbstractServiceImpl implements Cate
 		LOGGER.debug(categoryVO.toString());
 		return categoryDAO.categoryDelete(categoryVO);
 	}
+
+	@Override
+	public boolean cateNameCheck(CategoryVO categoryVO) {
+		LOGGER.debug(categoryVO.toString());
+		categoryDAO.cateNameCheck(categoryVO);
+		return false;
+	}
 }

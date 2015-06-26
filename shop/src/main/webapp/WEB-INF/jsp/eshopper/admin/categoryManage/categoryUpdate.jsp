@@ -41,21 +41,13 @@
 							</select>
 						</div>
 						<div class="form-group">
-							<label for="add_category" class="col-sm-8 control-label"></label>
-							<button type="submit" class="btn-info btn" id="add_category">수정완료</button>
-							<!-- <button class="btn-danger btn" id="del_category">항목삭제</button> -->
+							<label for="add_category" class="col-sm-6 control-label"></label>
+							<button type="submit" class="btn-info btn" id="update_category">수정완료</button>
+							<button type="button" class="btn-danger btn" id="cancel">&nbsp;&nbsp;&nbsp;&nbsp;취소&nbsp;&nbsp;&nbsp;&nbsp;</button>
 						</div>
 					</div>
 				</div>
 			</form>
-			<%-- <form action="/categoryUpdate.do" method="post">
-				<!-- <input type="hidden" name="category_idx" class="form-control"/> -->
-				<input type="text" class="form-control" id="category_name" name="category_name" value="${categoryUpdate1.category_name }" style="width:164px;">
-				<input type="text" class="form-control" id="category_desc" name="category_desc" value="${categoryUpdate1.category_desc }" style="width:164px;">
-				<!-- <select id="upper_category" name="upper_category_idx" class="form-control" style="width:164px;">
-				</select> -->
-				<button type="submit">클릭</button>
-			</form> --%>
 		</div>
 	</div>
 </section>
@@ -71,18 +63,15 @@
 <script src="js/jquery.prettyPhoto.js"></script>
 <script src="js/main.js"></script>
 <script>
-$(document).ready(function(){
-	categoryBList();
-	
-});
-
+categoryBList();
+// 상위분류 셀렉트박스 로딩
 function categoryBList(){
 	$.ajax({
 		type: "POST"
 		, url: "/api/selBoxCateList.do"
 		, success: function(data){
 			$("#upper_category").children().remove();
-			$("<option value='0'>상위분류</option>"+data+"<option value='0'>없음 or 상위분류로</option>").appendTo($("#upper_category"));
+			$("<option value='x'>상위분류</option>"+data+"<option value='0'>없음 or 상위분류로</option>").appendTo($("#upper_category"));
 		}
 		, error: function(xhr, error, status){
 			alert(xhr.status);
@@ -90,17 +79,41 @@ function categoryBList(){
 	});
 }; 
 
+// text필드 클릭시 이전값 지우기
 $(".form-group").children("input:text").on("click", function(){
 	$(this).val("");
 });
 
-/* var cateUpdateResult = "${cateUpdateResult}";
-if(cateUpdateResult != null){
-	if(cateUpdateResult == '1'){
-		location.href="/categoryList.do?b_idx="+${shopDefaultVO.b_idx};
-	} else if (cateUpdateResult == '0'){
-		alert('실패');
-	}
-} */
+// 유효성 검사
+var validator = $("#cateUpdate_form").validate({
+	rules: {
+		category_name: {
+			required: true
+		},
+		category_desc: {
+			required: true
+		},
+		upper_category_idx: {
+			required: true,
+			valueNotEquals: 'x'
+		}
+	}	
+});
 
+// 상위분류 필수선택 메서드
+$.validator.addMethod("valueNotEquals", function(value, element, arg){
+	  return arg != value;
+}, "필수항목 입니다.");
+
+// 취소버튼
+$("#cancel").on("click", function(){
+	location.href="/categoryList.do";
+});
+
+// 업데이트 완료시 alert 후 리스트로
+var cateUpdateResult = ${cateUpdateResult};
+if(cateUpdateResult != 0){
+		alert('수정완료');
+		location.href="/categoryList.do?b_idx="+${shopDefaultVO.b_idx};
+}
 </script>

@@ -30,7 +30,7 @@
 						<th style="width: 150px">등록일</th>
 						<th style="width: 100px">등록자</th>
 						<th>삭제일</th>
-						<th>${shopDefaultVO.b_idx }</th>
+						<th>편집</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -42,7 +42,7 @@
 						<td>${category.category_regdate }</td>					
 						<td>${category.category_register }</td>					
 						<td>${category.category_deldate }</td>				
-						<td><a href="#" class="cateUpdate" idx="${category.category_idx }">편집</a> 
+						<td><a href="#" class="cateUpdate" idx="${category.category_idx }">수정</a> 
 						/ <a href="#" class="cateDelete" idx="${category.category_idx }">삭제</a></td>				
 					</tr>
 					</c:forEach>
@@ -68,12 +68,8 @@
 <script>
 $(document).ready(function(){
 	categoryBList();
-	
-	var cateUpdateResult = "${cateUpdateResult}";
-	var cateDelResult  = "${cateDelResult}";
 });
 
-//var categoryBString;
 // 대분류 항목 로딩
 function categoryBList(){
 	$.ajax({
@@ -81,8 +77,9 @@ function categoryBList(){
 		, url: "/api/selBoxCateList.do"
 		, success: function(data){
 			$("#categoryB").children().remove();
-			$("<option value=''>대분류</option>"+data+"<option value='x'>대분류만</option>"+"<option value='all'>전체</option>").appendTo($("#categoryB"));
-			//categoryBString = data;
+			$("<option value=''>분류선택</option>"+"<option value=''>===========</option>"+data
+					+"<option value=''>===========</option>"+"<option value='x'>대분류만</option>"
+					+"<option value='all'>전체</option>").appendTo($("#categoryB"));
 		}
 		, error: function(xhr, error, status){
 			alert(xhr.status);
@@ -105,19 +102,17 @@ $("#categoryB").on("change", function(){
 
 // 새로등록버튼 이벤트
 $("#add_category").on("click", function(){
-	//window.open("/categoryWrite.do");
-	modalPopup();
+	popup();
 });
 
-// 새로등록 모달
-function modalPopup(){ 
-    var objectName = new Object(); // object 선언 modal의 이름이 된다. 
-    //objectName.message = "이건 테스트"; // modal에 넘겨줄 값을 선언할 수 있다. 
+// 새로등록 팝업
+function popup(){ 
+    var objectName = new Object(); // object 선언
+    //objectName.message = "이건 테스트"; // popup에 넘겨줄 값
     var site = "/categoryWrite.do"; 
-    //var style ="dialogWidth:100px;dialogHeight:200px"; // 사이즈등 style을 선언 
-    window.open(site, "", "width=200, height=200"); // modal 실행 window.showModalDialog 포인트!! 
-    // modal 에 넘겨줬던 값을 다시 부모창에 받아 들임     
-    //document.getElementById("test1").value = objectName.message; 
+    //var style ="dialogWidth:100px;dialogHeight:200px"; // model 스타일
+    //window.showModalDialog(site, objectName, style);// modal 실행 window.showModalDialog 포인트
+    window.open(site, "", "width=200, height=250");  // popUp실행
 }
 
 $(".cateUpdate").on("click", function(){
@@ -134,15 +129,19 @@ $(".cateDelete").on("click", function(){
 	} else {
 		result = confirm($(this).parent().siblings("td").eq(2).text()+" 분류를 삭제하시겠습니까?");
 	}
-	//alert(result+" / "+cateIdx);
 	
 	if(result){
-		location.href="/categoryDelete.do?category_idx="+cateIdx;
+		location.href="/categoryDelete.do?category_idx="+cateIdx+"&b_idx=0";
 	} else {
 		return false;
 	}
 });
 
+/* var cateDelResult  = ${cateDelResult};
+if(cateUpdateResult != 0){
+	alert('삭제완료');
+	location.reload();
+} */
 
 </script>
 </body>

@@ -14,12 +14,17 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
     </context:component-scan>
 
+	<!-- 스프링 3.1 이후버전부터 적용되는 기본 핸들러어댑터 선택된 메소드를 실행(invoke) 시켜주는 핸들러어댑터 -->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<!-- 바인딩되는 값을 자동 형변환 -->
         <property name="webBindingInitializer">
             <bean class="egovframework.example.cmmn.web.EgovBindingInitializer"/>
         </property>
     </bean>
+    
+    <!-- 스프링 3.1 이후버전부터 적용되는 기본 핸들러매핑클래스 HTTP로부터 넘어오는 요청을 읽어 실행시킬 Controller-Method를 선택 --> 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+	    <!-- 요청이 RequestMappingHandlerMapping에 의해 처리되기 전에 가로채어 지정된 작업을 수행한다  -->
         <property name="interceptors">
             <list>
                 <ref bean="localeChangeInterceptor" />
@@ -28,8 +33,14 @@
     </bean>
     
     
+    <!-- 다국어설정 -->
+    <!--LocaleResolver를 통해 DispatcherServlet이 사용자의 Locale을 알아낸다
+    특정 LocaleResolver를 정의하지 않을 경우 디폴트로 AcceptHeaderLocaleResolver를 이용한다
+    SessionLocaleResolver : request가 갖고 있는 session으로부터 locale 정보를 가져온다  -->
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
     <!-- 쿠키를 이용한 Locale 이용시 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/> -->
+    <!-- HandlerMapping에 interceptor를 등록하여 특정 locale의 요청을 가로채서 
+    특정 파라미터에 넘어 온 값으로 locale을 지정할 수 있다 -->
     <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
         <property name="paramName" value="language" />
     </bean>
@@ -74,9 +85,10 @@
 	</bean> -->
 	
 	
-
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+    	<!-- 지정된 예외 이외의 경우 기본 에러페이지 지정 -->
         <property name="defaultErrorView" value="cmmn/egovError"/>
+		<!-- 특정 예외가 발생했을때 이동할 특정페이지 지정 -->
         <property name="exceptionMappings">
             <props>
                 <prop key="org.springframework.dao.DataAccessException">cmmn/dataAccessFailure</prop>
@@ -87,6 +99,8 @@
         </property>
     </bean>
 
+	<!-- ViewResolver의 구현체로 특별한 맵핑정보 없이 view 이름을 URL로 사용
+	view 이름과 실제 view 자원과의 이름이 같을 때 사용할 수 있다 -->
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
 	    p:viewClass="org.springframework.web.servlet.view.JstlView"
 	    p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
